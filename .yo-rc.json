@@ -1,0 +1,35 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.bytatech.ayoos"
+    },
+    "jhipsterVersion": "5.8.1",
+    "applicationType": "microservice",
+    "baseName": "doctor",
+    "packageName": "com.bytatech.ayoos",
+    "packageFolder": "com/bytatech/ayoos",
+    "serverPort": "8083",
+    "authenticationType": "oauth2",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ZjBmOTc2MmVjODlkYWIyMzBjMGQwNDdjYmUxNTczMjYxOWZjMDEzY2VlYTNlNjVhY2I5Y2RhYjRiYjliNWFmMzk2YTNiYzUwNDMzNmE1MGQ5ZWNiZmM2NjgwNzc0NzU4ZTBmNmE4ZmEwYTZhOTgyZjExMWIwNWM1YjQ1NzllYjQ=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
