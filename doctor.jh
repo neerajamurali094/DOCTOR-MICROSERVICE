@@ -1,0 +1,74 @@
+entity Doctor {
+	image ImageBlob,
+    doctorId String,
+    specialization String,
+    registerNumber String,
+    practiceSince ZonedDateTime,
+    totalRating Double
+}
+
+entity ContactInfo{
+ 
+	facebookURL String,
+	twitterURL String
+}
+
+entity WorkPlace{
+
+ name String,
+ location String
+
+}
+
+entity Qualification{
+
+qualification String
+
+}
+
+entity UserRating{
+userName String,
+rating Double,
+ratedOn ZonedDateTime
+}
+
+entity Review{
+review String
+}
+entity Reply{
+reply String
+}
+
+entity SessionInfo{
+sessionName String,
+date ZonedDateTime,
+weekDay Integer,
+fromTime Double min(0),
+toTime Double max(23)
+
+}
+
+relationship OneToOne{
+Doctor{contactInfo} to ContactInfo
+
+
+}
+
+relationship OneToMany{
+
+Doctor{workPlace} to WorkPlace,
+Doctor{qualification} to Qualification,
+Review{reply} to Reply,
+Doctor{sessionInfo} to SessionInfo,
+Doctor{review} to Review,
+Doctor{userRating} to UserRating
+
+}
+
+
+dto * with mapstruct
+
+paginate * with pagination
+
+
+service all with serviceImpl

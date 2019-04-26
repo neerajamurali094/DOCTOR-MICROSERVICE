@@ -1,0 +1,80 @@
+{
+    "name": "Doctor",
+    "fields": [
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "doctorId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "specialization",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "registerNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "practiceSince",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "totalRating",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "contactInfo",
+            "otherEntityName": "contactInfo",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "workPlace",
+            "otherEntityName": "workPlace",
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "qualification",
+            "otherEntityName": "qualification",
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "sessionInfo",
+            "otherEntityName": "sessionInfo",
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "review",
+            "otherEntityName": "review",
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "userRating",
+            "otherEntityName": "userRating",
+            "otherEntityRelationshipName": "doctor"
+        }
+    ],
+    "changelogDate": "20190426094706",
+    "entityTableName": "doctor",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "doctor",
+    "applications": "*",
+    "microserviceName": "doctor"
+}

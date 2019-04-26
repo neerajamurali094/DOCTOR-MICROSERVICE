@@ -1,0 +1,51 @@
+{
+    "name": "SessionInfo",
+    "fields": [
+        {
+            "fieldName": "sessionName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "weekDay",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fromTime",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "toTime",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": 23
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190426094713",
+    "entityTableName": "session_info",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "doctor",
+    "applications": "*",
+    "microserviceName": "doctor"
+}

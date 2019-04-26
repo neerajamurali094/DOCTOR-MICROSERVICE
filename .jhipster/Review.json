@@ -1,0 +1,33 @@
+{
+    "name": "Review",
+    "fields": [
+        {
+            "fieldName": "review",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "reply",
+            "otherEntityName": "reply",
+            "otherEntityRelationshipName": "review"
+        }
+    ],
+    "changelogDate": "20190426094711",
+    "entityTableName": "review",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "doctor",
+    "applications": "*",
+    "microserviceName": "doctor"
+}
