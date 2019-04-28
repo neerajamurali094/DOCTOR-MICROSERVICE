@@ -15,34 +15,22 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity SessionInfo.
+        Added the entity ReservedSlot.
     -->
-    <changeSet id="20190426094713-1" author="jhipster">
-        <createTable tableName="session_info">
+    <changeSet id="20190427094543-1" author="jhipster">
+        <createTable tableName="reserved_slot">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="session_name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
             <column name="jhi_date" type="date">
                 <constraints nullable="true" />
             </column>
 
-            <column name="week_day" type="integer">
+            <column name="start_time" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="from_time" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="to_time" type="double">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="jhi_interval" type="double">
+            <column name="end_time" type="double">
                 <constraints nullable="true" />
             </column>
 

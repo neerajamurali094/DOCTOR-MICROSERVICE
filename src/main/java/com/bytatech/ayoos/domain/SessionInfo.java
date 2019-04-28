@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -29,7 +29,7 @@ public class SessionInfo implements Serializable {
     private String sessionName;
 
     @Column(name = "jhi_date")
-    private ZonedDateTime date;
+    private LocalDate date;
 
     @Column(name = "week_day")
     private Integer weekDay;
@@ -41,6 +41,9 @@ public class SessionInfo implements Serializable {
     @DecimalMax(value = "23")
     @Column(name = "to_time")
     private Double toTime;
+
+    @Column(name = "jhi_interval")
+    private Double interval;
 
     @ManyToOne
     @JsonIgnoreProperties("sessionInfos")
@@ -68,16 +71,16 @@ public class SessionInfo implements Serializable {
         this.sessionName = sessionName;
     }
 
-    public ZonedDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public SessionInfo date(ZonedDateTime date) {
+    public SessionInfo date(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -118,6 +121,19 @@ public class SessionInfo implements Serializable {
 
     public void setToTime(Double toTime) {
         this.toTime = toTime;
+    }
+
+    public Double getInterval() {
+        return interval;
+    }
+
+    public SessionInfo interval(Double interval) {
+        this.interval = interval;
+        return this;
+    }
+
+    public void setInterval(Double interval) {
+        this.interval = interval;
     }
 
     public Doctor getDoctor() {
@@ -163,6 +179,7 @@ public class SessionInfo implements Serializable {
             ", weekDay=" + getWeekDay() +
             ", fromTime=" + getFromTime() +
             ", toTime=" + getToTime() +
+            ", interval=" + getInterval() +
             "}";
     }
 }

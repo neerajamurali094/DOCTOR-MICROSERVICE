@@ -7,7 +7,7 @@
         },
         {
             "fieldName": "date",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "LocalDate"
         },
         {
             "fieldName": "weekDay",
@@ -28,6 +28,10 @@
                 "max"
             ],
             "fieldValidateRulesMax": 23
+        },
+        {
+            "fieldName": "interval",
+            "fieldType": "Double"
         }
     ],
     "relationships": [

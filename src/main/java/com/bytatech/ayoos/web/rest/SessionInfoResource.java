@@ -1,5 +1,7 @@
 package com.bytatech.ayoos.web.rest;
+
 import com.bytatech.ayoos.domain.SessionInfo;
+import com.bytatech.ayoos.domain.pojo.Slot;
 import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.SessionInfoService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
@@ -9,7 +11,6 @@ import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.SessionInfoDTO;
 import com.bytatech.ayoos.service.mapper.DoctorMapper;
 import com.bytatech.ayoos.service.mapper.SessionInfoMapper;
-
 
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -25,15 +26,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing SessionInfo.
@@ -47,12 +48,14 @@ public class SessionInfoResource {
 	private static final String ENTITY_NAME = "doctorSessionInfo";
 
 	private final SessionInfoService sessionInfoService;
+
 	@Autowired
 	SessionInfoMapper sessionInfoMapper;
 	@Autowired
 	DoctorService doctorService;
 	@Autowired
 	private DoctorMapper doctorMapper;
+
 	public SessionInfoResource(SessionInfoService sessionInfoService) {
 		this.sessionInfoService = sessionInfoService;
 	}
@@ -188,17 +191,17 @@ public class SessionInfoResource {
 					if (weekRef == sDTO.getWeekDay()) {
 						SessionInfo s = new SessionInfo();
 						s.setSessionName(sDTO.getSessionName());
-						s.setDate(ZonedDateTime.ofInstant(c.getTime().toInstant(), ZoneId.systemDefault()));
+						s.setDate(sDTO.getDate());
 						s.setWeekDay(weekRef);
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
-						
-						DoctorDTO doctorDTO=	doctorService.findOne(sDTO.getDoctorId()).get();
-						
+
+						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
+
 						s.setDoctor(doctorMapper.toEntity(doctorDTO));
-						
+
 						if (s.getId() != null) {
-							
+
 							throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 						}
 						SessionInfoDTO Sessiondto = sessionInfoMapper.toDto(s);
@@ -219,4 +222,25 @@ public class SessionInfoResource {
 		}
 	}
 
+	/*@GetMapping("/slots/{date}")
+	public void createSlots(@PathVariable LocalDate date) {
+		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
+		List<Slot> slots = new ArrayList<Slot>();
+		for (SessionInfoDTO sessionDTO : sessionList) {
+			double startTime=sessionDTO.getFromTime();
+			double interval = sessionDTO.getInterval();
+			
+			Slot s = new Slot();
+			
+			
+			
+			s.setStarTime(startTime);
+			s.setToTime(startTime+interval);
+			
+			slots.add(s);
+			
+
+		}
+
+	}*/
 }

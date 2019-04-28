@@ -41,11 +41,17 @@ reply String
 
 entity SessionInfo{
 sessionName String,
-date ZonedDateTime,
+date LocalDate,
 weekDay Integer,
 fromTime Double min(0),
-toTime Double max(23)
+toTime Double max(23),
+interval Double
+}
 
+entity ReservedSlot{
+	date LocalDate,
+	startTime Double,
+	endTime Double
 }
 
 relationship OneToOne{
@@ -53,7 +59,9 @@ Doctor{contactInfo} to ContactInfo
 
 
 }
-
+entity Status{
+	status String
+}
 relationship OneToMany{
 
 Doctor{workPlace} to WorkPlace,
@@ -61,7 +69,10 @@ Doctor{qualification} to Qualification,
 Review{reply} to Reply,
 Doctor{sessionInfo} to SessionInfo,
 Doctor{review} to Review,
-Doctor{userRating} to UserRating
+Doctor{userRating} to UserRating,
+Doctor{reservedSlot} to ReservedSlot,
+ReservedSlot{status} to Status
+
 
 }
 

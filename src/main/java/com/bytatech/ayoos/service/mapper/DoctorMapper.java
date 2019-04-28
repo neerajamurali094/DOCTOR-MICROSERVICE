@@ -20,6 +20,7 @@ public interface DoctorMapper extends EntityMapper<DoctorDTO, Doctor> {
     @Mapping(target = "sessionInfos", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(target = "userRatings", ignore = true)
+    @Mapping(target = "reservedSlots", ignore = true)
     Doctor toEntity(DoctorDTO doctorDTO);
 
     default Doctor fromId(Long id) {

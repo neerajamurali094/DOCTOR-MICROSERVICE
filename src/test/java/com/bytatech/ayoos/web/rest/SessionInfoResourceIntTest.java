@@ -28,15 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
 
-import static com.bytatech.ayoos.web.rest.TestUtil.sameInstant;
 import static com.bytatech.ayoos.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -57,8 +54,8 @@ public class SessionInfoResourceIntTest {
     private static final String DEFAULT_SESSION_NAME = "AAAAAAAAAA";
     private static final String UPDATED_SESSION_NAME = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final Integer DEFAULT_WEEK_DAY = 1;
     private static final Integer UPDATED_WEEK_DAY = 2;
@@ -68,6 +65,9 @@ public class SessionInfoResourceIntTest {
 
     private static final Double DEFAULT_TO_TIME = 23D;
     private static final Double UPDATED_TO_TIME = 22D;
+
+    private static final Double DEFAULT_INTERVAL = 1D;
+    private static final Double UPDATED_INTERVAL = 2D;
 
     @Autowired
     private SessionInfoRepository sessionInfoRepository;
@@ -129,7 +129,8 @@ public class SessionInfoResourceIntTest {
             .date(DEFAULT_DATE)
             .weekDay(DEFAULT_WEEK_DAY)
             .fromTime(DEFAULT_FROM_TIME)
-            .toTime(DEFAULT_TO_TIME);
+            .toTime(DEFAULT_TO_TIME)
+            .interval(DEFAULT_INTERVAL);
         return sessionInfo;
     }
 
@@ -159,6 +160,7 @@ public class SessionInfoResourceIntTest {
         assertThat(testSessionInfo.getWeekDay()).isEqualTo(DEFAULT_WEEK_DAY);
         assertThat(testSessionInfo.getFromTime()).isEqualTo(DEFAULT_FROM_TIME);
         assertThat(testSessionInfo.getToTime()).isEqualTo(DEFAULT_TO_TIME);
+        assertThat(testSessionInfo.getInterval()).isEqualTo(DEFAULT_INTERVAL);
 
         // Validate the SessionInfo in Elasticsearch
         verify(mockSessionInfoSearchRepository, times(1)).save(testSessionInfo);
@@ -199,10 +201,11 @@ public class SessionInfoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(sessionInfo.getId().intValue())))
             .andExpect(jsonPath("$.[*].sessionName").value(hasItem(DEFAULT_SESSION_NAME.toString())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].weekDay").value(hasItem(DEFAULT_WEEK_DAY)))
             .andExpect(jsonPath("$.[*].fromTime").value(hasItem(DEFAULT_FROM_TIME.doubleValue())))
-            .andExpect(jsonPath("$.[*].toTime").value(hasItem(DEFAULT_TO_TIME.doubleValue())));
+            .andExpect(jsonPath("$.[*].toTime").value(hasItem(DEFAULT_TO_TIME.doubleValue())))
+            .andExpect(jsonPath("$.[*].interval").value(hasItem(DEFAULT_INTERVAL.doubleValue())));
     }
     
     @Test
@@ -217,10 +220,11 @@ public class SessionInfoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(sessionInfo.getId().intValue()))
             .andExpect(jsonPath("$.sessionName").value(DEFAULT_SESSION_NAME.toString()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.weekDay").value(DEFAULT_WEEK_DAY))
             .andExpect(jsonPath("$.fromTime").value(DEFAULT_FROM_TIME.doubleValue()))
-            .andExpect(jsonPath("$.toTime").value(DEFAULT_TO_TIME.doubleValue()));
+            .andExpect(jsonPath("$.toTime").value(DEFAULT_TO_TIME.doubleValue()))
+            .andExpect(jsonPath("$.interval").value(DEFAULT_INTERVAL.doubleValue()));
     }
 
     @Test
@@ -248,7 +252,8 @@ public class SessionInfoResourceIntTest {
             .date(UPDATED_DATE)
             .weekDay(UPDATED_WEEK_DAY)
             .fromTime(UPDATED_FROM_TIME)
-            .toTime(UPDATED_TO_TIME);
+            .toTime(UPDATED_TO_TIME)
+            .interval(UPDATED_INTERVAL);
         SessionInfoDTO sessionInfoDTO = sessionInfoMapper.toDto(updatedSessionInfo);
 
         restSessionInfoMockMvc.perform(put("/api/session-infos")
@@ -265,6 +270,7 @@ public class SessionInfoResourceIntTest {
         assertThat(testSessionInfo.getWeekDay()).isEqualTo(UPDATED_WEEK_DAY);
         assertThat(testSessionInfo.getFromTime()).isEqualTo(UPDATED_FROM_TIME);
         assertThat(testSessionInfo.getToTime()).isEqualTo(UPDATED_TO_TIME);
+        assertThat(testSessionInfo.getInterval()).isEqualTo(UPDATED_INTERVAL);
 
         // Validate the SessionInfo in Elasticsearch
         verify(mockSessionInfoSearchRepository, times(1)).save(testSessionInfo);
@@ -326,10 +332,11 @@ public class SessionInfoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(sessionInfo.getId().intValue())))
             .andExpect(jsonPath("$.[*].sessionName").value(hasItem(DEFAULT_SESSION_NAME)))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].weekDay").value(hasItem(DEFAULT_WEEK_DAY)))
             .andExpect(jsonPath("$.[*].fromTime").value(hasItem(DEFAULT_FROM_TIME.doubleValue())))
-            .andExpect(jsonPath("$.[*].toTime").value(hasItem(DEFAULT_TO_TIME.doubleValue())));
+            .andExpect(jsonPath("$.[*].toTime").value(hasItem(DEFAULT_TO_TIME.doubleValue())))
+            .andExpect(jsonPath("$.[*].interval").value(hasItem(DEFAULT_INTERVAL.doubleValue())));
     }
 
     @Test

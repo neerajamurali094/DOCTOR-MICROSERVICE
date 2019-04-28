@@ -65,6 +65,12 @@
             "relationshipName": "userRating",
             "otherEntityName": "userRating",
             "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "reservedSlot",
+            "otherEntityName": "reservedSlot",
+            "otherEntityRelationshipName": "doctor"
         }
     ],
     "changelogDate": "20190426094706",

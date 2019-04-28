@@ -1,5 +1,5 @@
 package com.bytatech.ayoos.service.dto;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,7 +13,7 @@ public class SessionInfoDTO implements Serializable {
 
     private String sessionName;
 
-    private ZonedDateTime date;
+    private LocalDate date;
 
     private Integer weekDay;
 
@@ -22,6 +22,8 @@ public class SessionInfoDTO implements Serializable {
 
     @DecimalMax(value = "23")
     private Double toTime;
+
+    private Double interval;
 
 
     private Long doctorId;
@@ -42,11 +44,11 @@ public class SessionInfoDTO implements Serializable {
         this.sessionName = sessionName;
     }
 
-    public ZonedDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -72,6 +74,14 @@ public class SessionInfoDTO implements Serializable {
 
     public void setToTime(Double toTime) {
         this.toTime = toTime;
+    }
+
+    public Double getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Double interval) {
+        this.interval = interval;
     }
 
     public Long getDoctorId() {
@@ -112,6 +122,7 @@ public class SessionInfoDTO implements Serializable {
             ", weekDay=" + getWeekDay() +
             ", fromTime=" + getFromTime() +
             ", toTime=" + getToTime() +
+            ", interval=" + getInterval() +
             ", doctor=" + getDoctorId() +
             "}";
     }

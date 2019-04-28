@@ -62,6 +62,8 @@ public class Doctor implements Serializable {
     private Set<Review> reviews = new HashSet<>();
     @OneToMany(mappedBy = "doctor")
     private Set<UserRating> userRatings = new HashSet<>();
+    @OneToMany(mappedBy = "doctor")
+    private Set<ReservedSlot> reservedSlots = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -298,6 +300,31 @@ public class Doctor implements Serializable {
 
     public void setUserRatings(Set<UserRating> userRatings) {
         this.userRatings = userRatings;
+    }
+
+    public Set<ReservedSlot> getReservedSlots() {
+        return reservedSlots;
+    }
+
+    public Doctor reservedSlots(Set<ReservedSlot> reservedSlots) {
+        this.reservedSlots = reservedSlots;
+        return this;
+    }
+
+    public Doctor addReservedSlot(ReservedSlot reservedSlot) {
+        this.reservedSlots.add(reservedSlot);
+        reservedSlot.setDoctor(this);
+        return this;
+    }
+
+    public Doctor removeReservedSlot(ReservedSlot reservedSlot) {
+        this.reservedSlots.remove(reservedSlot);
+        reservedSlot.setDoctor(null);
+        return this;
+    }
+
+    public void setReservedSlots(Set<ReservedSlot> reservedSlots) {
+        this.reservedSlots = reservedSlots;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
