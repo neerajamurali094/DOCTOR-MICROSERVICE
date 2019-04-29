@@ -195,7 +195,7 @@ public class SessionInfoResource {
 						s.setWeekDay(weekRef);
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
-
+                        s.setInterval(sDTO.getInterval());
 						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
 
 						s.setDoctor(doctorMapper.toEntity(doctorDTO));
@@ -222,25 +222,38 @@ public class SessionInfoResource {
 		}
 	}
 
-	/*@GetMapping("/slots/{date}")
-	public void createSlots(@PathVariable LocalDate date) {
+	@GetMapping("/slots/{date}")
+	public List<Slot> createSlots(@PathVariable LocalDate date) {
+		
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
+		
 		List<Slot> slots = new ArrayList<Slot>();
+		
+		double startTime = 0;
+		double endTime = 0;
+		
 		for (SessionInfoDTO sessionDTO : sessionList) {
-			double startTime=sessionDTO.getFromTime();
-			double interval = sessionDTO.getInterval();
-			
-			Slot s = new Slot();
-			
-			
-			
-			s.setStarTime(startTime);
-			s.setToTime(startTime+interval);
-			
-			slots.add(s);
-			
+
+			for (int i = 0; endTime == sessionDTO.getToTime(); i++) {
+
+				double interval = sessionDTO.getInterval();
+				
+				Slot s = new Slot();
+
+				if (i == 0) {
+					s.setStarTime(sessionDTO.getFromTime());
+				} else {
+					s.setStarTime(sessionDTO.getToTime());
+				}
+				s.setToTime(sessionDTO.getFromTime() + interval);
+
+				slots.add(s);
+				
+				endTime = sessionDTO.getToTime();
+			}
 
 		}
+		return slots;
 
-	}*/
+	}
 }
