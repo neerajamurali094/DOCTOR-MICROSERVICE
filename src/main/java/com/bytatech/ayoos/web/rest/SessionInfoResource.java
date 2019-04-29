@@ -191,7 +191,7 @@ public class SessionInfoResource {
 					if (weekRef == sDTO.getWeekDay()) {
 						SessionInfo s = new SessionInfo();
 						s.setSessionName(sDTO.getSessionName());
-						s.setDate(sDTO.getDate());
+						s.setDate(c.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						s.setWeekDay(weekRef);
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
@@ -206,13 +206,6 @@ public class SessionInfoResource {
 						}
 						SessionInfoDTO Sessiondto = sessionInfoMapper.toDto(s);
 						sessionInfoService.save(Sessiondto);
-
-						/*
-						 * System.out.println(c.get(Calendar.DAY_OF_WEEK) +
-						 * ">>>>>>>>>>>>>>>>>>>>>>      " +
-						 * c.getTime().getDate() +
-						 * ">>>>>>>>>>>>>>>>>>>>>>>>>           " + s);
-						 */
 					}
 				}
 
@@ -222,7 +215,7 @@ public class SessionInfoResource {
 		}
 	}
 
-	@GetMapping("/slots/{date}")
+/*	@GetMapping("/slots/{date}")
 	public List<Slot> createSlots(@PathVariable LocalDate date) {
 		
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
@@ -253,7 +246,8 @@ public class SessionInfoResource {
 			}
 
 		}
+		
 		return slots;
 
-	}
+	}*/
 }
