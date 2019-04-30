@@ -28,6 +28,8 @@ public class DoctorDTO implements Serializable {
 
     private Long contactInfoId;
 
+    private Long paymentSettingsId;
+
     public Long getId() {
         return id;
     }
@@ -100,6 +102,14 @@ public class DoctorDTO implements Serializable {
         this.contactInfoId = contactInfoId;
     }
 
+    public Long getPaymentSettingsId() {
+        return paymentSettingsId;
+    }
+
+    public void setPaymentSettingsId(Long paymentSettingsId) {
+        this.paymentSettingsId = paymentSettingsId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -132,6 +142,7 @@ public class DoctorDTO implements Serializable {
             ", practiceSince='" + getPracticeSince() + "'" +
             ", totalRating=" + getTotalRating() +
             ", contactInfo=" + getContactInfoId() +
+            ", paymentSettings=" + getPaymentSettingsId() +
             "}";
     }
 }

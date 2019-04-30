@@ -50,12 +50,17 @@ interval Double
 
 entity ReservedSlot{
 	date LocalDate,
-	startTime Double,
+ 	startTime Double,
 	endTime Double
 }
 
+entity PaymentSettings{
+amount  Double
+}
+
 relationship OneToOne{
-Doctor{contactInfo} to ContactInfo
+Doctor{contactInfo} to ContactInfo,
+Doctor{paymentSettings} to PaymentSettings
 
 
 }

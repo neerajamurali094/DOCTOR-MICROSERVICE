@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Doctor and its DTO DoctorDTO.
  */
-@Mapper(componentModel = "spring", uses = {ContactInfoMapper.class})
+@Mapper(componentModel = "spring", uses = {ContactInfoMapper.class, PaymentSettingsMapper.class})
 public interface DoctorMapper extends EntityMapper<DoctorDTO, Doctor> {
 
     @Mapping(source = "contactInfo.id", target = "contactInfoId")
+    @Mapping(source = "paymentSettings.id", target = "paymentSettingsId")
     DoctorDTO toDto(Doctor doctor);
 
     @Mapping(source = "contactInfoId", target = "contactInfo")
+    @Mapping(source = "paymentSettingsId", target = "paymentSettings")
     @Mapping(target = "workPlaces", ignore = true)
     @Mapping(target = "qualifications", ignore = true)
     @Mapping(target = "sessionInfos", ignore = true)

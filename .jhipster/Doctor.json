@@ -37,6 +37,14 @@
             "otherEntityRelationshipName": "doctor"
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "paymentSettings",
+            "otherEntityName": "paymentSettings",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
             "relationshipType": "one-to-many",
             "relationshipName": "workPlace",
             "otherEntityName": "workPlace",

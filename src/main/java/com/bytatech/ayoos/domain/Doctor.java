@@ -52,6 +52,10 @@ public class Doctor implements Serializable {
     @JoinColumn(unique = true)
     private ContactInfo contactInfo;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private PaymentSettings paymentSettings;
+
     @OneToMany(mappedBy = "doctor")
     private Set<WorkPlace> workPlaces = new HashSet<>();
     @OneToMany(mappedBy = "doctor")
@@ -175,6 +179,19 @@ public class Doctor implements Serializable {
 
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    public PaymentSettings getPaymentSettings() {
+        return paymentSettings;
+    }
+
+    public Doctor paymentSettings(PaymentSettings paymentSettings) {
+        this.paymentSettings = paymentSettings;
+        return this;
+    }
+
+    public void setPaymentSettings(PaymentSettings paymentSettings) {
+        this.paymentSettings = paymentSettings;
     }
 
     public Set<WorkPlace> getWorkPlaces() {
