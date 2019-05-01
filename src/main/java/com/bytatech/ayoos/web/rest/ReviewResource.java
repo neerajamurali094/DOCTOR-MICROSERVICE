@@ -1,9 +1,14 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.Qualification;
+import com.bytatech.ayoos.domain.Review;
 import com.bytatech.ayoos.service.ReviewService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
+import com.bytatech.ayoos.service.dto.QualificationDTO;
 import com.bytatech.ayoos.service.dto.ReviewDTO;
+import com.bytatech.ayoos.service.mapper.ReviewMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -36,6 +41,7 @@ public class ReviewResource {
 
     private final ReviewService reviewService;
 
+    private ReviewMapper reviewMapper;
     public ReviewResource(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
@@ -52,6 +58,10 @@ public class ReviewResource {
         log.debug("REST request to save Review : {}", reviewDTO);
         if (reviewDTO.getId() != null) {
             throw new BadRequestAlertException("A new review cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        ReviewDTO resultDTO = reviewService.save(reviewDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ReviewDTO result = reviewService.save(reviewDTO);
         return ResponseEntity.created(new URI("/api/reviews/" + result.getId()))
@@ -135,5 +145,15 @@ public class ReviewResource {
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/reviews");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    
+    
+    @PostMapping("/reviews/toDto")
+    public ResponseEntity<List<ReviewDTO>> listToDto(@RequestBody List<Review> review) {
+    	 log.debug("REST request to convert to DTO");
+    	List<ReviewDTO> dtos = new ArrayList<>();
+    	review.forEach(a -> {dtos.add(reviewMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
+    
 
 }

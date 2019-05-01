@@ -1,9 +1,14 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.PaymentSettings;
+import com.bytatech.ayoos.domain.Qualification;
 import com.bytatech.ayoos.service.QualificationService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
+import com.bytatech.ayoos.service.dto.PaymentSettingsDTO;
 import com.bytatech.ayoos.service.dto.QualificationDTO;
+import com.bytatech.ayoos.service.mapper.QualificationMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -35,7 +40,7 @@ public class QualificationResource {
     private static final String ENTITY_NAME = "doctorQualification";
 
     private final QualificationService qualificationService;
-
+    private QualificationMapper qualificationMapper;
     public QualificationResource(QualificationService qualificationService) {
         this.qualificationService = qualificationService;
     }
@@ -53,7 +58,11 @@ public class QualificationResource {
         if (qualificationDTO.getId() != null) {
             throw new BadRequestAlertException("A new qualification cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        QualificationDTO result = qualificationService.save(qualificationDTO);
+        QualificationDTO resultDTO = qualificationService.save(qualificationDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        QualificationDTO result = qualificationService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/qualifications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -136,4 +145,12 @@ public class QualificationResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    
+    @PostMapping("/qualifications/toDto")
+    public ResponseEntity<List<QualificationDTO>> listToDto(@RequestBody List<Qualification> qualification) {
+    	 log.debug("REST request to convert to DTO");
+    	List<QualificationDTO> dtos = new ArrayList<>();
+    	qualification.forEach(a -> {dtos.add(qualificationMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
 }

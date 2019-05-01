@@ -53,7 +53,12 @@ public class StatusResource {
         if (statusDTO.getId() != null) {
             throw new BadRequestAlertException("A new status cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        StatusDTO result = statusService.save(statusDTO);
+        
+        StatusDTO resultDTO = statusService.save(statusDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        StatusDTO result = statusService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

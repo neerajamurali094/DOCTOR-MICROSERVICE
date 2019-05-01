@@ -1,12 +1,15 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.UserRatingService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
+import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.UserRatingDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +39,16 @@ public class UserRatingResource {
 
     private final UserRatingService userRatingService;
 
+
+    @Autowired
+    private DoctorService doctorService;
+
+	private static int fiveCount;
+	private static int fourCount;
+	private static int threeCount;
+	private static int twoCount;
+	private static int oneCount;
+	
     public UserRatingResource(UserRatingService userRatingService) {
         this.userRatingService = userRatingService;
     }
@@ -53,7 +66,14 @@ public class UserRatingResource {
         if (userRatingDTO.getId() != null) {
             throw new BadRequestAlertException("A new userRating cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserRatingDTO result = userRatingService.save(userRatingDTO);
+        UserRatingDTO resultDTO = userRatingService.save(userRatingDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        UserRatingDTO result = userRatingService.save(resultDTO);
+     
+        
+        
         return ResponseEntity.created(new URI("/api/user-ratings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

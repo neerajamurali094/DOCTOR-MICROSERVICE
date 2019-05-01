@@ -1,9 +1,14 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.ContactInfo;
+import com.bytatech.ayoos.domain.Doctor;
 import com.bytatech.ayoos.service.ContactInfoService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.ContactInfoDTO;
+import com.bytatech.ayoos.service.dto.DoctorDTO;
+import com.bytatech.ayoos.service.mapper.ContactInfoMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -36,6 +41,7 @@ public class ContactInfoResource {
 
     private final ContactInfoService contactInfoService;
 
+    private ContactInfoMapper contactInfoMapper;
     public ContactInfoResource(ContactInfoService contactInfoService) {
         this.contactInfoService = contactInfoService;
     }
@@ -53,7 +59,11 @@ public class ContactInfoResource {
         if (contactInfoDTO.getId() != null) {
             throw new BadRequestAlertException("A new contactInfo cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ContactInfoDTO result = contactInfoService.save(contactInfoDTO);
+        ContactInfoDTO resultDTO = contactInfoService.save(contactInfoDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        ContactInfoDTO result = contactInfoService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/contact-infos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -136,4 +146,12 @@ public class ContactInfoResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    
+    @PostMapping("/contact-infos/toDto")
+    public ResponseEntity<List<ContactInfoDTO>> listToDto(@RequestBody List<ContactInfo> contactInfo) {
+    	 log.debug("REST request to convert to DTO");
+    	List<ContactInfoDTO> dtos = new ArrayList<>();
+    	contactInfo.forEach(a -> {dtos.add(contactInfoMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
 }

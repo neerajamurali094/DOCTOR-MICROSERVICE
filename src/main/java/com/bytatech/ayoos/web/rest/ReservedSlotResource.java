@@ -53,7 +53,11 @@ public class ReservedSlotResource {
         if (reservedSlotDTO.getId() != null) {
             throw new BadRequestAlertException("A new reservedSlot cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ReservedSlotDTO result = reservedSlotService.save(reservedSlotDTO);
+        ReservedSlotDTO resultDTO = reservedSlotService.save(reservedSlotDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        ReservedSlotDTO result = reservedSlotService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/reserved-slots/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

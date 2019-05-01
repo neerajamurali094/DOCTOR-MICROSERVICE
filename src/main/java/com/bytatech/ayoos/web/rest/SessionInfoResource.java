@@ -1,5 +1,6 @@
 package com.bytatech.ayoos.web.rest;
 
+import com.bytatech.ayoos.domain.Review;
 import com.bytatech.ayoos.domain.SessionInfo;
 import com.bytatech.ayoos.domain.pojo.Slot;
 import com.bytatech.ayoos.service.DoctorService;
@@ -8,8 +9,10 @@ import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
+import com.bytatech.ayoos.service.dto.ReviewDTO;
 import com.bytatech.ayoos.service.dto.SessionInfoDTO;
 import com.bytatech.ayoos.service.mapper.DoctorMapper;
+import com.bytatech.ayoos.service.mapper.ReviewMapper;
 import com.bytatech.ayoos.service.mapper.SessionInfoMapper;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -78,7 +81,11 @@ public class SessionInfoResource {
 		if (sessionInfoDTO.getId() != null) {
 			throw new BadRequestAlertException("A new sessionInfo cannot already have an ID", ENTITY_NAME, "idexists");
 		}
-		SessionInfoDTO result = sessionInfoService.save(sessionInfoDTO);
+		SessionInfoDTO resultDTO = sessionInfoService.save(sessionInfoDTO);
+		if (resultDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		SessionInfoDTO result = sessionInfoService.save(resultDTO);
 		return ResponseEntity.created(new URI("/api/session-infos/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
@@ -195,7 +202,7 @@ public class SessionInfoResource {
 						s.setWeekDay(weekRef);
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
-                        s.setInterval(sDTO.getInterval());
+						s.setInterval(sDTO.getInterval());
 						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
 
 						s.setDoctor(doctorMapper.toEntity(doctorDTO));
@@ -215,22 +222,22 @@ public class SessionInfoResource {
 		}
 	}
 
-@GetMapping("/slots/{date}")
+	@GetMapping("/slots/{date}")
 	public List<Slot> createSlots(@PathVariable LocalDate date) {
-		
+
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
-		
+
 		List<Slot> slots = new ArrayList<Slot>();
-		
+
 		double startTime = 0;
 		double endTime = 0;
-		
+
 		for (SessionInfoDTO sessionDTO : sessionList) {
 
 			for (int i = 0; endTime == sessionDTO.getToTime(); i++) {
 
 				double interval = sessionDTO.getInterval();
-				
+
 				Slot s = new Slot();
 
 				if (i == 0) {
@@ -241,13 +248,24 @@ public class SessionInfoResource {
 				s.setToTime(sessionDTO.getFromTime() + interval);
 
 				slots.add(s);
-				
+
 				endTime = sessionDTO.getToTime();
 			}
 
 		}
-		
+
 		return slots;
 
 	}
+
+	@PostMapping("/session-infos/toDto")
+	public ResponseEntity<List<SessionInfoDTO>> listToDto(@RequestBody List<SessionInfo> sessionInfo) {
+		log.debug("REST request to convert to DTO");
+		List<SessionInfoDTO> dtos = new ArrayList<>();
+		sessionInfo.forEach(a -> {
+			dtos.add(sessionInfoMapper.toDto(a));
+		});
+		return ResponseEntity.ok().body(dtos);
+	}
+
 }

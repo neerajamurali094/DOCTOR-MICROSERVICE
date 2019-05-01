@@ -1,9 +1,14 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.ContactInfo;
+import com.bytatech.ayoos.domain.PaymentSettings;
 import com.bytatech.ayoos.service.PaymentSettingsService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
+import com.bytatech.ayoos.service.dto.ContactInfoDTO;
 import com.bytatech.ayoos.service.dto.PaymentSettingsDTO;
+import com.bytatech.ayoos.service.mapper.PaymentSettingsMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -35,7 +40,7 @@ public class PaymentSettingsResource {
     private static final String ENTITY_NAME = "doctorPaymentSettings";
 
     private final PaymentSettingsService paymentSettingsService;
-
+    private  PaymentSettingsMapper paymentSettingsMapper;
     public PaymentSettingsResource(PaymentSettingsService paymentSettingsService) {
         this.paymentSettingsService = paymentSettingsService;
     }
@@ -53,7 +58,12 @@ public class PaymentSettingsResource {
         if (paymentSettingsDTO.getId() != null) {
             throw new BadRequestAlertException("A new paymentSettings cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PaymentSettingsDTO result = paymentSettingsService.save(paymentSettingsDTO);
+        PaymentSettingsDTO resultDTO = paymentSettingsService.save(paymentSettingsDTO);
+        
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        PaymentSettingsDTO result = paymentSettingsService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/payment-settings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -136,4 +146,14 @@ public class PaymentSettingsResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PostMapping("/payment-settings/toDto")
+    public ResponseEntity<List<PaymentSettingsDTO>> listToDto(@RequestBody List<PaymentSettings> paymentSettings) {
+    	 log.debug("REST request to convert to DTO");
+    	List<PaymentSettingsDTO> dtos = new ArrayList<>();
+    	paymentSettings.forEach(a -> {dtos.add(paymentSettingsMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
+    
+    
 }
+

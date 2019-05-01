@@ -53,7 +53,12 @@ public class WorkPlaceResource {
         if (workPlaceDTO.getId() != null) {
             throw new BadRequestAlertException("A new workPlace cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        WorkPlaceDTO result = workPlaceService.save(workPlaceDTO);
+        WorkPlaceDTO resultDTO = workPlaceService.save(workPlaceDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        WorkPlaceDTO result = workPlaceService.save(resultDTO);
+        
         return ResponseEntity.created(new URI("/api/work-places/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
