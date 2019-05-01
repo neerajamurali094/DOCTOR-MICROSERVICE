@@ -1,11 +1,11 @@
 package com.bytatech.ayoos.web.rest;
-import com.bytatech.ayoos.domain.Qualification;
+
 import com.bytatech.ayoos.domain.WorkPlace;
 import com.bytatech.ayoos.service.WorkPlaceService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
-import com.bytatech.ayoos.service.dto.QualificationDTO;
+
 import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
 import com.bytatech.ayoos.service.mapper.WorkPlaceMapper;
 
