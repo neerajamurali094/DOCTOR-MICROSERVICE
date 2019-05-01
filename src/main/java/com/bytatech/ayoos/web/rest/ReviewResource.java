@@ -12,6 +12,7 @@ import com.bytatech.ayoos.service.mapper.ReviewMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +41,7 @@ public class ReviewResource {
     private static final String ENTITY_NAME = "doctorReview";
 
     private final ReviewService reviewService;
-
+    @Autowired
     private ReviewMapper reviewMapper;
     public ReviewResource(ReviewService reviewService) {
         this.reviewService = reviewService;

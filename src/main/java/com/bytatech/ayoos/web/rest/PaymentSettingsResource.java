@@ -12,6 +12,7 @@ import com.bytatech.ayoos.service.mapper.PaymentSettingsMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +41,7 @@ public class PaymentSettingsResource {
     private static final String ENTITY_NAME = "doctorPaymentSettings";
 
     private final PaymentSettingsService paymentSettingsService;
+    @Autowired
     private  PaymentSettingsMapper paymentSettingsMapper;
     public PaymentSettingsResource(PaymentSettingsService paymentSettingsService) {
         this.paymentSettingsService = paymentSettingsService;
