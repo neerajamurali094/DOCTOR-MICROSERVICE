@@ -10,6 +10,7 @@ import com.bytatech.ayoos.service.mapper.DoctorMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,7 @@ public class DoctorResource {
 
     private final DoctorService doctorService;
     
+    @Autowired
     private DoctorMapper doctorMapper;
     
     public DoctorResource(DoctorService doctorService) {
