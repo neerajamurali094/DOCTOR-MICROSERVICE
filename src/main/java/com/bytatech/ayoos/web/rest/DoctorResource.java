@@ -153,5 +153,10 @@ public class DoctorResource {
     	return ResponseEntity.ok().body(dtos);
     }
 
-    
+   @PostMapping("/doctor/modelToDto")
+    public ResponseEntity<DoctorDTO> modelToDto(@RequestBody Doctor doctor) {
+    	 log.debug("REST request to convert to DTO");
+    	return ResponseEntity.ok().body(doctorMapper.toDto(doctor));
+    }
+
 }

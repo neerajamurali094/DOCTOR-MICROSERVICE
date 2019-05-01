@@ -154,4 +154,12 @@ public class ContactInfoResource {
     	contactInfo.forEach(a -> {dtos.add(contactInfoMapper.toDto(a));});
     	return ResponseEntity.ok().body(dtos);
     }
+    
+    @PostMapping("/contact-infos/modelToDto")
+    public ResponseEntity<ContactInfoDTO> modelToDto(@RequestBody ContactInfo contactInfo) {
+    	 log.debug("REST request to convert to DTO");
+    	return ResponseEntity.ok().body(contactInfoMapper.toDto(contactInfo));
+    }
+    
+    
 }

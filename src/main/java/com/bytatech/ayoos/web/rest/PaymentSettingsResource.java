@@ -154,6 +154,10 @@ public class PaymentSettingsResource {
     	return ResponseEntity.ok().body(dtos);
     }
     
-    
+    @PostMapping("/payment-settings/modelToDto")
+    public ResponseEntity<PaymentSettingsDTO> modelToDto(@RequestBody PaymentSettings paymentSettings) {
+    	 log.debug("REST request to convert to DTO");
+    	return ResponseEntity.ok().body(paymentSettingsMapper.toDto(paymentSettings));
+    }
 }
 
