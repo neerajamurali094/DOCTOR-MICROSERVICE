@@ -1,9 +1,14 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.Qualification;
+import com.bytatech.ayoos.domain.WorkPlace;
 import com.bytatech.ayoos.service.WorkPlaceService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
+import com.bytatech.ayoos.service.dto.QualificationDTO;
 import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
+import com.bytatech.ayoos.service.mapper.WorkPlaceMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -36,6 +41,7 @@ public class WorkPlaceResource {
 
     private final WorkPlaceService workPlaceService;
 
+    private  WorkPlaceMapper workPlaceMapper;
     public WorkPlaceResource(WorkPlaceService workPlaceService) {
         this.workPlaceService = workPlaceService;
     }
@@ -141,4 +147,11 @@ public class WorkPlaceResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/work-places/toDto")
+    public ResponseEntity<List<WorkPlaceDTO>> listToDto(@RequestBody List<WorkPlace> workPlace) {
+    	 log.debug("REST request to convert to DTO");
+    	List<WorkPlaceDTO> dtos = new ArrayList<>();
+    	workPlace.forEach(a -> {dtos.add(workPlaceMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
 }
