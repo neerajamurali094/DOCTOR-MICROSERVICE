@@ -148,7 +148,7 @@ public class WorkPlaceResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/work-places/toDto")
+    @PostMapping("/work-places/toDto")
     public ResponseEntity<List<WorkPlaceDTO>> listToDto(@RequestBody List<WorkPlace> workPlace) {
     	 log.debug("REST request to convert to DTO");
     	List<WorkPlaceDTO> dtos = new ArrayList<>();
