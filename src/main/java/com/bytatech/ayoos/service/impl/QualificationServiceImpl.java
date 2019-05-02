@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -109,4 +110,12 @@ public class QualificationServiceImpl implements QualificationService {
         return qualificationSearchRepository.search(queryStringQuery(query), pageable)
             .map(qualificationMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.QualificationService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public List<QualificationDTO> findByDoctorId(Long doctorId) {
+		 return qualificationMapper.toDto(qualificationRepository.findByDoctorId(doctorId));
+	}
 }

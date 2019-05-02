@@ -7,6 +7,7 @@ import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.PaymentSettingsDTO;
 import com.bytatech.ayoos.service.dto.QualificationDTO;
+import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
 import com.bytatech.ayoos.service.mapper.QualificationMapper;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -154,5 +155,10 @@ public class QualificationResource {
     	List<QualificationDTO> dtos = new ArrayList<>();
     	qualification.forEach(a -> {dtos.add(qualificationMapper.toDto(a));});
     	return ResponseEntity.ok().body(dtos);
+    }
+    
+    @GetMapping("/findAllQualificationByDoctorId/{doctorId}")
+    public List<QualificationDTO> findAllQualificationByDoctorId(@PathVariable Long doctorId){
+    return	qualificationService.findByDoctorId(doctorId);
     }
 }

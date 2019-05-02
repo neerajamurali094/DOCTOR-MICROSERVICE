@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -109,4 +110,12 @@ public class WorkPlaceServiceImpl implements WorkPlaceService {
         return workPlaceSearchRepository.search(queryStringQuery(query), pageable)
             .map(workPlaceMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.WorkPlaceService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public List<WorkPlaceDTO> findByDoctorId(Long doctorId) {
+		return workPlaceMapper.toDto(workPlaceRepository.findByDoctorId(doctorId));
+	}
 }

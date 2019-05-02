@@ -1,10 +1,13 @@
 package com.bytatech.ayoos.service;
 
+import com.bytatech.ayoos.domain.WorkPlace;
 import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,4 +56,7 @@ public interface WorkPlaceService {
      * @return the list of entities
      */
     Page<WorkPlaceDTO> search(String query, Pageable pageable);
+    List<WorkPlaceDTO> findByDoctorId(Long doctorId);
+    
+    
 }

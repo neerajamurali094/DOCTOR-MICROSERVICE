@@ -1,11 +1,12 @@
 package com.bytatech.ayoos.web.rest;
 
 import com.bytatech.ayoos.domain.WorkPlace;
+import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.WorkPlaceService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
-
+import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
 import com.bytatech.ayoos.service.mapper.WorkPlaceMapper;
 
@@ -41,6 +42,9 @@ public class WorkPlaceResource {
     private static final String ENTITY_NAME = "doctorWorkPlace";
 
     private final WorkPlaceService workPlaceService;
+    
+    @Autowired
+    private DoctorService doctorService;
     @Autowired
     private  WorkPlaceMapper workPlaceMapper;
     public WorkPlaceResource(WorkPlaceService workPlaceService) {
@@ -66,6 +70,12 @@ public class WorkPlaceResource {
         }
         WorkPlaceDTO result = workPlaceService.save(resultDTO);
         
+        
+      DoctorDTO doctorDTO=  doctorService.findOne(result.getDoctorId()).get();
+      if (doctorDTO.getId() == null) {
+          throw new BadRequestAlertException("Invalid id", "doctor", "idnull");
+      }
+      doctorService.save(doctorDTO);
         return ResponseEntity.created(new URI("/api/work-places/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -154,5 +164,10 @@ public class WorkPlaceResource {
     	List<WorkPlaceDTO> dtos = new ArrayList<>();
     	workPlace.forEach(a -> {dtos.add(workPlaceMapper.toDto(a));});
     	return ResponseEntity.ok().body(dtos);
+    }
+    
+    @GetMapping("/findAllWorkPlacesByDoctorId/{doctorId}")
+    public List<WorkPlaceDTO> findAllWorkPlacesByDoctorId(@PathVariable Long doctorId){
+    return	workPlaceService.findByDoctorId(doctorId);
     }
 }
