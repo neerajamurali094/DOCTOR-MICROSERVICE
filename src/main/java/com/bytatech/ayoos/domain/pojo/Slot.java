@@ -28,6 +28,8 @@ public class Slot {
 	private LocalDate date;
 	private double starTime ;
 	private double toTime;
+	private boolean bookedOrNot ;
+	
 	public long getId() {
 		return id;
 	}

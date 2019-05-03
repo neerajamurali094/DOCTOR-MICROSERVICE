@@ -226,34 +226,38 @@ public class SessionInfoResource {
 	public List<Slot> createSlots(@PathVariable LocalDate date) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
-
+   
 		List<Slot> slots = new ArrayList<Slot>();
 
 		double startTime = 0;
 		double endTime = 0;
 
 		for (SessionInfoDTO sessionDTO : sessionList) {
-
-			for (int i = 0; endTime == sessionDTO.getToTime(); i++) {
-
+System.out.println("sessionDTO>>>>>>>>>>>>>>>>>        "+sessionDTO);
+			for (int i = 0; endTime <= sessionDTO.getToTime(); i++) {
+System.out.println(endTime+">>>>>>>>>>>>>>>>>>>"+sessionDTO.getToTime()+"<<<<<<<<<<<<"+(endTime != sessionDTO.getToTime()));
 				double interval = sessionDTO.getInterval();
 
 				Slot s = new Slot();
 
 				if (i == 0) {
 					s.setStarTime(sessionDTO.getFromTime());
+					System.out.println("))))))))))))"+s);
 				} else {
-					s.setStarTime(sessionDTO.getToTime());
+					s.setStarTime(s.getToTime());
 				}
-				s.setToTime(sessionDTO.getFromTime() + interval);
-
+				s.setToTime(s.getStarTime()+ interval);
+				s.setDate(sessionDTO.getDate());
+				s.setId(i+1);
+				System.out.println("))))))))))))"+s);
+				
 				slots.add(s);
-
-				endTime = sessionDTO.getToTime();
+				System.out.println("slot      ********************          "+s);
+				endTime = s.getToTime();
 			}
 
 		}
-
+System.out.println("slots>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+slots);
 		return slots;
 
 	}
