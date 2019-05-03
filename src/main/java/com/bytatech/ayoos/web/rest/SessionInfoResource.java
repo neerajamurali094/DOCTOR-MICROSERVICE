@@ -234,7 +234,7 @@ public class SessionInfoResource {
 
 		for (SessionInfoDTO sessionDTO : sessionList) {
 System.out.println("sessionDTO>>>>>>>>>>>>>>>>>        "+sessionDTO);
-			for (int i = 0; endTime <= sessionDTO.getToTime(); i++) {
+			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
 System.out.println(endTime+">>>>>>>>>>>>>>>>>>>"+sessionDTO.getToTime()+"<<<<<<<<<<<<"+(endTime != sessionDTO.getToTime()));
 				double interval = sessionDTO.getInterval();
 
@@ -253,6 +253,7 @@ System.out.println(endTime+">>>>>>>>>>>>>>>>>>>"+sessionDTO.getToTime()+"<<<<<<<
 				
 				slots.add(s);
 				System.out.println("slot      ********************          "+s);
+				startTime=s.getStarTime();
 				endTime = s.getToTime();
 			}
 
