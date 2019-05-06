@@ -155,7 +155,7 @@ public class ReservedSlotResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @PostMapping("/session-infos/toDto")
+    @PostMapping("/reserved-slot/toDto")
     public ResponseEntity<List<ReservedSlotDTO>> listToDto(@RequestBody List<ReservedSlot> reservedSlot) {
     	 log.debug("REST request to convert to DTO");
     	List<ReservedSlotDTO> dtos = new ArrayList<>();
