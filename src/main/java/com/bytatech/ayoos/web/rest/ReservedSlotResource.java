@@ -1,12 +1,19 @@
 package com.bytatech.ayoos.web.rest;
+import com.bytatech.ayoos.domain.ReservedSlot;
 import com.bytatech.ayoos.service.ReservedSlotService;
+import com.bytatech.ayoos.service.SessionInfoService;
+import com.bytatech.ayoos.service.StatusService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.ReservedSlotDTO;
+import com.bytatech.ayoos.service.dto.SessionInfoDTO;
+import com.bytatech.ayoos.service.dto.StatusDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -35,7 +43,10 @@ public class ReservedSlotResource {
     private static final String ENTITY_NAME = "doctorReservedSlot";
 
     private final ReservedSlotService reservedSlotService;
-
+    @Autowired
+    private  StatusService statusService;
+    @Autowired
+    private  SessionInfoService sessionInfoService;
     public ReservedSlotResource(ReservedSlotService reservedSlotService) {
         this.reservedSlotService = reservedSlotService;
     }
@@ -140,4 +151,72 @@ public class ReservedSlotResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    
+    @GetMapping("/slot/{date}")
+    
+	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date) {
+
+		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
+
+		List<ReservedSlotDTO> slots = new ArrayList<ReservedSlotDTO>();
+
+		Double startTime = 0.0;
+		Double endTime = 0.0;
+
+		for (SessionInfoDTO sessionDTO : sessionList) {
+			
+			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
+				
+				ReservedSlotDTO s = new ReservedSlotDTO();
+
+				if (i == 0) {
+					s.setStartTime(sessionDTO.getFromTime());
+
+				} else {
+					//endTime = s.getToTime();
+					s.setStartTime(endTime);
+
+				}
+
+				s.setEndTime(s.getStartTime() + sessionDTO.getInterval());
+				s.setDate(sessionDTO.getDate());
+				s.setId(i+1L);
+				//add doctorid
+				reservedSlotService.save(s);
+				slots.add(s);
+
+				startTime = s.getStartTime();
+				endTime = s.getEndTime();
+			}
+
+		}
+
+		return slots;
+
+	}
+    
+    @GetMapping("/unReserved-slots")
+    public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable){
+    	List<ReservedSlotDTO> slots=reservedSlotService.findAll(pageable).getContent();
+    	List<ReservedSlotDTO> unreservedSlots=new ArrayList<ReservedSlotDTO>();
+    	for(ReservedSlotDTO slot:slots){
+  
+    	StatusDTO status=	statusService.findByReservedSlotId(slot.getId());
+ 
+    	if(status!=null){
+    	
+    		if((status.getStatus().equalsIgnoreCase("booked"))){
+    			
+    			unreservedSlots.add(slot);
+    		}
+    	}
+    	}
+    	return unreservedSlots;
+    }
+    /*
+    @GetMapping("/status/{reserveredSlotId}")
+    public StatusDTO getStatus(@PathVariable Long reserveredSlotId){
+    	return statusService.findByReservedSlotId(reserveredSlotId);
+    }*/
 }
+

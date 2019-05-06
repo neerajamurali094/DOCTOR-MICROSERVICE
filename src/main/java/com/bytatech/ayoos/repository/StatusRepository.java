@@ -12,4 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StatusRepository extends JpaRepository<Status, Long> {
 
+	/**
+	 * @param id
+	 */
+	Status findByReservedSlotId(Long id);
+
 }

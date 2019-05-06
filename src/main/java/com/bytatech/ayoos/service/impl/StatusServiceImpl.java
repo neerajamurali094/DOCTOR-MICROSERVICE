@@ -98,7 +98,7 @@ public class StatusServiceImpl implements StatusService {
     /**
      * Search for the status corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query the query of the searchc
      * @param pageable the pagination information
      * @return the list of entities
      */
@@ -109,4 +109,12 @@ public class StatusServiceImpl implements StatusService {
         return statusSearchRepository.search(queryStringQuery(query), pageable)
             .map(statusMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.StatusService#findByReservedSlotId(java.lang.Long)
+	 */
+	@Override
+	public StatusDTO findByReservedSlotId(Long id) {
+		return statusMapper.toDto(statusRepository.findByReservedSlotId(id));
+	}
 }
