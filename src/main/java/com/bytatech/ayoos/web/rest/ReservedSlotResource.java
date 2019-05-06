@@ -1,5 +1,6 @@
 package com.bytatech.ayoos.web.rest;
 import com.bytatech.ayoos.domain.ReservedSlot;
+import com.bytatech.ayoos.domain.SessionInfo;
 import com.bytatech.ayoos.service.ReservedSlotService;
 import com.bytatech.ayoos.service.SessionInfoService;
 import com.bytatech.ayoos.service.StatusService;
@@ -9,6 +10,7 @@ import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.ReservedSlotDTO;
 import com.bytatech.ayoos.service.dto.SessionInfoDTO;
 import com.bytatech.ayoos.service.dto.StatusDTO;
+import com.bytatech.ayoos.service.mapper.ReservedSlotMapper;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -47,6 +49,8 @@ public class ReservedSlotResource {
     private  StatusService statusService;
     @Autowired
     private  SessionInfoService sessionInfoService;
+    @Autowired
+    private ReservedSlotMapper reservedSlotMapper;
     public ReservedSlotResource(ReservedSlotService reservedSlotService) {
         this.reservedSlotService = reservedSlotService;
     }
@@ -151,8 +155,16 @@ public class ReservedSlotResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PostMapping("/session-infos/toDto")
+    public ResponseEntity<List<ReservedSlotDTO>> listToDto(@RequestBody List<ReservedSlot> reservedSlot) {
+    	 log.debug("REST request to convert to DTO");
+    	List<ReservedSlotDTO> dtos = new ArrayList<>();
+    	reservedSlot.forEach(a -> {dtos.add(reservedSlotMapper.toDto(a));});
+    	return ResponseEntity.ok().body(dtos);
+    }
     
-    @GetMapping("/slot/{date}")
+    
+    @PostMapping("/slot/{date}")
     
 	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date) {
 

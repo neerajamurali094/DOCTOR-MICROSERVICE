@@ -1,5 +1,6 @@
 package com.bytatech.ayoos.web.rest;
 
+import com.bytatech.ayoos.domain.Doctor;
 import com.bytatech.ayoos.domain.ReservedSlot;
 import com.bytatech.ayoos.domain.Review;
 import com.bytatech.ayoos.domain.SessionInfo;
@@ -180,7 +181,17 @@ public class SessionInfoResource {
 				"/api/_search/session-infos");
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
-
+	
+	 @PostMapping("/session-infos/toDto")
+	    public ResponseEntity<List<SessionInfoDTO>> listToDto(@RequestBody List<SessionInfo> sessionInfo) {
+	    	 log.debug("REST request to convert to DTO");
+	    	List<SessionInfoDTO> dtos = new ArrayList<>();
+	    	sessionInfo.forEach(a -> {dtos.add(sessionInfoMapper.toDto(a));});
+	    	return ResponseEntity.ok().body(dtos);
+	    }
+	
+	
+	
 	@PostMapping("/createSessionInfo")
 	public List<SessionInfoDTO> setSessionToMonth(@RequestBody List<SessionInfoDTO> sessionList,
 			@RequestParam List<Integer> monthList) {
