@@ -74,7 +74,6 @@ public class UserRatingResource {
 	        
 	        //......................................................................................
 	        UserRatingDTO result = userRatingService.save(userRatingDTO);
-	        
 	DoctorDTO doctorDTO=doctorService.findOne(userRatingDTO.getDoctorId()).get();
 			
 			if (userRatingDTO.getRating() != null) {

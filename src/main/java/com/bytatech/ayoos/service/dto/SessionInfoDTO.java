@@ -28,6 +28,8 @@ public class SessionInfoDTO implements Serializable {
 
     private Long doctorId;
 
+    private Long workPlaceId;
+
     public Long getId() {
         return id;
     }
@@ -92,6 +94,14 @@ public class SessionInfoDTO implements Serializable {
         this.doctorId = doctorId;
     }
 
+    public Long getWorkPlaceId() {
+        return workPlaceId;
+    }
+
+    public void setWorkPlaceId(Long workPlaceId) {
+        this.workPlaceId = workPlaceId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -124,6 +134,7 @@ public class SessionInfoDTO implements Serializable {
             ", toTime=" + getToTime() +
             ", interval=" + getInterval() +
             ", doctor=" + getDoctorId() +
+            ", workPlace=" + getWorkPlaceId() +
             "}";
     }
 }

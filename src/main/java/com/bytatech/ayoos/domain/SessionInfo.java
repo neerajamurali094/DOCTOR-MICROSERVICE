@@ -49,6 +49,10 @@ public class SessionInfo implements Serializable {
     @JsonIgnoreProperties("sessionInfos")
     private Doctor doctor;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private WorkPlace workPlace;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -147,6 +151,19 @@ public class SessionInfo implements Serializable {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public WorkPlace getWorkPlace() {
+        return workPlace;
+    }
+
+    public SessionInfo workPlace(WorkPlace workPlace) {
+        this.workPlace = workPlace;
+        return this;
+    }
+
+    public void setWorkPlace(WorkPlace workPlace) {
+        this.workPlace = workPlace;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

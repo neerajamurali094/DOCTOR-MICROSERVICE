@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity SessionInfo and its DTO SessionInfoDTO.
  */
-@Mapper(componentModel = "spring", uses = {DoctorMapper.class})
+@Mapper(componentModel = "spring", uses = {DoctorMapper.class, WorkPlaceMapper.class})
 public interface SessionInfoMapper extends EntityMapper<SessionInfoDTO, SessionInfo> {
 
     @Mapping(source = "doctor.id", target = "doctorId")
+    @Mapping(source = "workPlace.id", target = "workPlaceId")
     SessionInfoDTO toDto(SessionInfo sessionInfo);
 
     @Mapping(source = "doctorId", target = "doctor")
+    @Mapping(source = "workPlaceId", target = "workPlace")
     SessionInfo toEntity(SessionInfoDTO sessionInfoDTO);
 
     default SessionInfo fromId(Long id) {

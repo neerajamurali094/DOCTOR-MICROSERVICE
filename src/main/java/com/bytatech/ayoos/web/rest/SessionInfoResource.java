@@ -4,18 +4,22 @@ import com.bytatech.ayoos.domain.Doctor;
 import com.bytatech.ayoos.domain.ReservedSlot;
 import com.bytatech.ayoos.domain.Review;
 import com.bytatech.ayoos.domain.SessionInfo;
+import com.bytatech.ayoos.domain.WorkPlace;
 import com.bytatech.ayoos.domain.pojo.Slot;
 import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.SessionInfoService;
+import com.bytatech.ayoos.service.WorkPlaceService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.ReviewDTO;
 import com.bytatech.ayoos.service.dto.SessionInfoDTO;
+import com.bytatech.ayoos.service.dto.WorkPlaceDTO;
 import com.bytatech.ayoos.service.mapper.DoctorMapper;
 import com.bytatech.ayoos.service.mapper.ReviewMapper;
 import com.bytatech.ayoos.service.mapper.SessionInfoMapper;
+import com.bytatech.ayoos.service.mapper.WorkPlaceMapper;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -61,6 +65,10 @@ public class SessionInfoResource {
 	DoctorService doctorService;
 	@Autowired
 	private DoctorMapper doctorMapper;
+	@Autowired
+	WorkPlaceService workPlaceService;
+	@Autowired
+	WorkPlaceMapper workPlaceMapper;
 
 	public SessionInfoResource(SessionInfoService sessionInfoService) {
 		this.sessionInfoService = sessionInfoService;
@@ -181,17 +189,17 @@ public class SessionInfoResource {
 				"/api/_search/session-infos");
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
-	
-	 @PostMapping("/session-infos/toDto")
-	    public ResponseEntity<List<SessionInfoDTO>> listToDto(@RequestBody List<SessionInfo> sessionInfo) {
-	    	 log.debug("REST request to convert to DTO");
-	    	List<SessionInfoDTO> dtos = new ArrayList<>();
-	    	sessionInfo.forEach(a -> {dtos.add(sessionInfoMapper.toDto(a));});
-	    	return ResponseEntity.ok().body(dtos);
-	    }
-	
-	
-	
+
+	@PostMapping("/session-infos/toDto")
+	public ResponseEntity<List<SessionInfoDTO>> listToDto(@RequestBody List<SessionInfo> sessionInfo) {
+		log.debug("REST request to convert to DTO");
+		List<SessionInfoDTO> dtos = new ArrayList<>();
+		sessionInfo.forEach(a -> {
+			dtos.add(sessionInfoMapper.toDto(a));
+		});
+		return ResponseEntity.ok().body(dtos);
+	}
+
 	@PostMapping("/createSessionInfo")
 	public List<SessionInfoDTO> setSessionToMonth(@RequestBody List<SessionInfoDTO> sessionList,
 			@RequestParam List<Integer> monthList) {
@@ -216,8 +224,9 @@ public class SessionInfoResource {
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
 						s.setInterval(sDTO.getInterval());
+						WorkPlaceDTO workplaceDTO = workPlaceService.findOne(sDTO.getWorkPlaceId()).get();
+						s.setWorkPlace(workPlaceMapper.toEntity(workplaceDTO));
 						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
-
 						s.setDoctor(doctorMapper.toEntity(doctorDTO));
 
 						if (s.getId() != null) {
@@ -225,7 +234,7 @@ public class SessionInfoResource {
 							throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 						}
 						SessionInfoDTO Sessiondto = sessionInfoMapper.toDto(s);
-						SessionInfoDTO dto=	sessionInfoService.save(Sessiondto);
+						SessionInfoDTO dto = sessionInfoService.save(Sessiondto);
 						sessionDTO.add(dto);
 					}
 				}
@@ -237,55 +246,23 @@ public class SessionInfoResource {
 		return sessionDTO;
 	}
 
-	
-	
-	
-	
-	
-	
-	/*@GetMapping("/slots/{date}")
-	public List<Slot> createSlots(@PathVariable LocalDate date) {
-
-		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
-
-		List<Slot> slots = new ArrayList<Slot>();
-
-		Double startTime = 0.0;
-		Double endTime = 0.0;
-
-		for (SessionInfoDTO sessionDTO : sessionList) {
-
-			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
-
-				Slot s = new Slot();
-
-				if (i == 0) {
-					s.setStarTime(sessionDTO.getFromTime());
-					// System.out.println("if starttime
-					// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>cl"+s.getStarTime());
-				} else {
-					// endTime = s.getToTime();
-					s.setStarTime(endTime);
-					// System.out.println("else
-					// endtime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+s.getStarTime());
-				}
-
-				s.setToTime(s.getStarTime() + sessionDTO.getInterval());
-				// System.out.println("totime
-				// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+s.getToTime());
-				s.setDate(sessionDTO.getDate());
-				s.setId(i + 1);
-
-				slots.add(s);
-
-				startTime = s.getStarTime();
-				endTime = s.getToTime();
-			}
-
-		}
-
-		return slots;
-
-	}*/
+	/*
+	 * @GetMapping("/slots/{date}") public List<Slot> createSlots(@PathVariable
+	 * LocalDate date) { List<SessionInfoDTO> sessionList =
+	 * sessionInfoService.findByDate(date); List<Slot> slots = new
+	 * ArrayList<Slot>(); Double startTime = 0.0; Double endTime = 0.0; for
+	 * (SessionInfoDTO sessionDTO : sessionList) { for (int i = 0; startTime <=
+	 * sessionDTO.getToTime(); i++) { Slot s = new Slot(); if (i == 0) {
+	 * s.setStarTime(sessionDTO.getFromTime()); // System.out.println("if
+	 * starttime // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>cl"+s.getStarTime()); }
+	 * else { // endTime = s.getToTime(); s.setStarTime(endTime); //
+	 * System.out.println("else //
+	 * endtime>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+s.getStarTime()); }
+	 * s.setToTime(s.getStarTime() + sessionDTO.getInterval()); //
+	 * System.out.println("totime //
+	 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+s.getToTime());
+	 * s.setDate(sessionDTO.getDate()); s.setId(i + 1); slots.add(s); startTime
+	 * = s.getStarTime(); endTime = s.getToTime(); } } return slots; }
+	 */
 
 }

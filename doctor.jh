@@ -60,7 +60,8 @@ amount  Double
 
 relationship OneToOne{
 Doctor{contactInfo} to ContactInfo,
-Doctor{paymentSettings} to PaymentSettings
+Doctor{paymentSettings} to PaymentSettings,
+SessionInfo{workPlace} to WorkPlace
 
 
 }
