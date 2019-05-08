@@ -65,10 +65,10 @@ public class SessionInfoResource {
 	DoctorService doctorService;
 	@Autowired
 	private DoctorMapper doctorMapper;
-	@Autowired
+	/*@Autowired
 	WorkPlaceService workPlaceService;
 	@Autowired
-	WorkPlaceMapper workPlaceMapper;
+	WorkPlaceMapper workPlaceMapper;*/
 
 	public SessionInfoResource(SessionInfoService sessionInfoService) {
 		this.sessionInfoService = sessionInfoService;
