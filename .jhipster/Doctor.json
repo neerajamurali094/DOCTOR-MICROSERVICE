@@ -58,12 +58,6 @@
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "sessionInfo",
-            "otherEntityName": "sessionInfo",
-            "otherEntityRelationshipName": "doctor"
-        },
-        {
-            "relationshipType": "one-to-many",
             "relationshipName": "review",
             "otherEntityName": "review",
             "otherEntityRelationshipName": "doctor"

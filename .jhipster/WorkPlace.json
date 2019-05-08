@@ -16,6 +16,12 @@
             "otherEntityName": "doctor",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "sessionInfo",
+            "otherEntityName": "sessionInfo",
+            "otherEntityRelationshipName": "workPlace"
         }
     ],
     "changelogDate": "20190426094708",

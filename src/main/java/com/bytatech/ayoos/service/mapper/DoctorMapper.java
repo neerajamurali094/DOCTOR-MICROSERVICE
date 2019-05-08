@@ -19,7 +19,6 @@ public interface DoctorMapper extends EntityMapper<DoctorDTO, Doctor> {
     @Mapping(source = "paymentSettingsId", target = "paymentSettings")
     @Mapping(target = "workPlaces", ignore = true)
     @Mapping(target = "qualifications", ignore = true)
-    @Mapping(target = "sessionInfos", ignore = true)
     @Mapping(target = "reviews", ignore = true)
     @Mapping(target = "userRatings", ignore = true)
     @Mapping(target = "reservedSlots", ignore = true)

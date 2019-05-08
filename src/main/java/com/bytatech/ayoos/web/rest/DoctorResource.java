@@ -1,16 +1,12 @@
 package com.bytatech.ayoos.web.rest;
-import com.bytatech.ayoos.domain.Doctor;
 import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
 import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
-import com.bytatech.ayoos.service.mapper.DoctorMapper;
-
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -39,10 +35,7 @@ public class DoctorResource {
     private static final String ENTITY_NAME = "doctorDoctor";
 
     private final DoctorService doctorService;
-    
-    @Autowired
-    private DoctorMapper doctorMapper;
-    
+
     public DoctorResource(DoctorService doctorService) {
         this.doctorService = doctorService;
     }
@@ -60,12 +53,7 @@ public class DoctorResource {
         if (doctorDTO.getId() != null) {
             throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        DoctorDTO resultDTO = doctorService.save(doctorDTO);
-        
-        if (resultDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        DoctorDTO result=doctorService.save(resultDTO);
+        DoctorDTO result = doctorService.save(doctorDTO);
         return ResponseEntity.created(new URI("/api/doctors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -146,19 +134,6 @@ public class DoctorResource {
         Page<DoctorDTO> page = doctorService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/doctors");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-    @PostMapping("/doctors/toDto")
-    public ResponseEntity<List<DoctorDTO>> listToDto(@RequestBody List<Doctor> doctor) {
-    	 log.debug("REST request to convert to DTO");
-    	List<DoctorDTO> dtos = new ArrayList<>();
-    	doctor.forEach(a -> {dtos.add(doctorMapper.toDto(a));});
-    	return ResponseEntity.ok().body(dtos);
-    }
-
-   @PostMapping("/doctor/modelToDto")
-    public ResponseEntity<DoctorDTO> modelToDto(@RequestBody Doctor doctor) {
-    	 log.debug("REST request to convert to DTO");
-    	return ResponseEntity.ok().body(doctorMapper.toDto(doctor));
     }
 
 }

@@ -227,8 +227,7 @@ public class SessionInfoResource {
 						
 						WorkPlaceDTO workplaceDTO = workPlaceService.findOne(sDTO.getWorkPlaceId()).get();
 						s.setWorkPlace(workPlaceMapper.toEntity(workplaceDTO));
-						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
-						s.setDoctor(doctorMapper.toEntity(doctorDTO));
+						
 
 						if (s.getId() != null) {
 

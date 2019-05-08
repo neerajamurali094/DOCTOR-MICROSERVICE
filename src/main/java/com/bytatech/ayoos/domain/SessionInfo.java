@@ -47,10 +47,6 @@ public class SessionInfo implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("sessionInfos")
-    private Doctor doctor;
-
-    @OneToOne
-    @JoinColumn(unique = true)
     private WorkPlace workPlace;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -138,19 +134,6 @@ public class SessionInfo implements Serializable {
 
     public void setInterval(Double interval) {
         this.interval = interval;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public SessionInfo doctor(Doctor doctor) {
-        this.doctor = doctor;
-        return this;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
     }
 
     public WorkPlace getWorkPlace() {

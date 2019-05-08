@@ -15,6 +15,7 @@ public interface WorkPlaceMapper extends EntityMapper<WorkPlaceDTO, WorkPlace> {
     WorkPlaceDTO toDto(WorkPlace workPlace);
 
     @Mapping(source = "doctorId", target = "doctor")
+    @Mapping(target = "sessionInfos", ignore = true)
     WorkPlace toEntity(WorkPlaceDTO workPlaceDTO);
 
     default WorkPlace fromId(Long id) {

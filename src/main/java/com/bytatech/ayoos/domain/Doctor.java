@@ -61,8 +61,6 @@ public class Doctor implements Serializable {
     @OneToMany(mappedBy = "doctor")
     private Set<Qualification> qualifications = new HashSet<>();
     @OneToMany(mappedBy = "doctor")
-    private Set<SessionInfo> sessionInfos = new HashSet<>();
-    @OneToMany(mappedBy = "doctor")
     private Set<Review> reviews = new HashSet<>();
     @OneToMany(mappedBy = "doctor")
     private Set<UserRating> userRatings = new HashSet<>();
@@ -242,31 +240,6 @@ public class Doctor implements Serializable {
 
     public void setQualifications(Set<Qualification> qualifications) {
         this.qualifications = qualifications;
-    }
-
-    public Set<SessionInfo> getSessionInfos() {
-        return sessionInfos;
-    }
-
-    public Doctor sessionInfos(Set<SessionInfo> sessionInfos) {
-        this.sessionInfos = sessionInfos;
-        return this;
-    }
-
-    public Doctor addSessionInfo(SessionInfo sessionInfo) {
-        this.sessionInfos.add(sessionInfo);
-        sessionInfo.setDoctor(this);
-        return this;
-    }
-
-    public Doctor removeSessionInfo(SessionInfo sessionInfo) {
-        this.sessionInfos.remove(sessionInfo);
-        sessionInfo.setDoctor(null);
-        return this;
-    }
-
-    public void setSessionInfos(Set<SessionInfo> sessionInfos) {
-        this.sessionInfos = sessionInfos;
     }
 
     public Set<Review> getReviews() {

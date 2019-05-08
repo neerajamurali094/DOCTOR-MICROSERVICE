@@ -26,8 +26,6 @@ public class SessionInfoDTO implements Serializable {
     private Double interval;
 
 
-    private Long doctorId;
-
     private Long workPlaceId;
 
     public Long getId() {
@@ -86,14 +84,6 @@ public class SessionInfoDTO implements Serializable {
         this.interval = interval;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
-    }
-
     public Long getWorkPlaceId() {
         return workPlaceId;
     }
@@ -133,7 +123,6 @@ public class SessionInfoDTO implements Serializable {
             ", fromTime=" + getFromTime() +
             ", toTime=" + getToTime() +
             ", interval=" + getInterval() +
-            ", doctor=" + getDoctorId() +
             ", workPlace=" + getWorkPlaceId() +
             "}";
     }

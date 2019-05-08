@@ -60,8 +60,7 @@ amount  Double
 
 relationship OneToOne{
 Doctor{contactInfo} to ContactInfo,
-Doctor{paymentSettings} to PaymentSettings,
-SessionInfo{workPlace} to WorkPlace
+Doctor{paymentSettings} to PaymentSettings
 
 
 }
@@ -71,9 +70,9 @@ entity Status{
 relationship OneToMany{
 
 Doctor{workPlace} to WorkPlace,
+WorkPlace{sessionInfo} to SessionInfo,
 Doctor{qualification} to Qualification,
 Review{reply} to Reply,
-Doctor{sessionInfo} to SessionInfo,
 Doctor{review} to Review,
 Doctor{userRating} to UserRating,
 Doctor{reservedSlot} to ReservedSlot,
