@@ -235,6 +235,10 @@ public class SessionInfoResource {
 						}
 						SessionInfoDTO Sessiondto = sessionInfoMapper.toDto(s);
 						SessionInfoDTO dto = sessionInfoService.save(Sessiondto);
+						if (dto.getId() == null) {
+							throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+						}
+						SessionInfoDTO result = sessionInfoService.save(dto);
 						sessionDTO.add(dto);
 					}
 				}
