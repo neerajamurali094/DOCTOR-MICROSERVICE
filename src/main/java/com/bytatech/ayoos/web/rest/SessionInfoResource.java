@@ -65,10 +65,10 @@ public class SessionInfoResource {
 	DoctorService doctorService;
 	@Autowired
 	private DoctorMapper doctorMapper;
-	/*@Autowired
+	@Autowired
 	WorkPlaceService workPlaceService;
 	@Autowired
-	WorkPlaceMapper workPlaceMapper;*/
+	WorkPlaceMapper workPlaceMapper;
 
 	public SessionInfoResource(SessionInfoService sessionInfoService) {
 		this.sessionInfoService = sessionInfoService;
@@ -224,8 +224,9 @@ public class SessionInfoResource {
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
 						s.setInterval(sDTO.getInterval());
-						/*WorkPlaceDTO workplaceDTO = workPlaceService.findOne(sDTO.getWorkPlaceId()).get();
-						s.setWorkPlace(workPlaceMapper.toEntity(workplaceDTO));*/
+						
+						WorkPlaceDTO workplaceDTO = workPlaceService.findOne(sDTO.getWorkPlaceId()).get();
+						s.setWorkPlace(workPlaceMapper.toEntity(workplaceDTO));
 						DoctorDTO doctorDTO = doctorService.findOne(sDTO.getDoctorId()).get();
 						s.setDoctor(doctorMapper.toEntity(doctorDTO));
 
