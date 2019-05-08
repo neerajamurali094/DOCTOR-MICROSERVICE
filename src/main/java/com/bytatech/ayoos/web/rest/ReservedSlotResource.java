@@ -190,7 +190,7 @@ public class ReservedSlotResource {
 
 				}
 
-				s.setEndTime(s.getStartTime() + sessionDTO.getInterval());
+				s.setEndTime(s.getStartTime() + (sessionDTO.getInterval()+0));
 				s.setDate(sessionDTO.getDate());
 				s.setId(i+1L);
 				//add doctorid

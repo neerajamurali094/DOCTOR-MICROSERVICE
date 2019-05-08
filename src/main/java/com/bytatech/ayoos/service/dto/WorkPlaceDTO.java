@@ -2,6 +2,8 @@ package com.bytatech.ayoos.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
+
 /**
  * A DTO for the WorkPlace entity.
  */
@@ -11,6 +13,7 @@ public class WorkPlaceDTO implements Serializable {
 
     private String name;
 
+    @GeoPointField
     private String location;
 
 

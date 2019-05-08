@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,6 +28,7 @@ public class WorkPlace implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @GeoPointField
     @Column(name = "location")
     private String location;
 
