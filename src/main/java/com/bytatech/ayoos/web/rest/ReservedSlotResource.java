@@ -194,7 +194,7 @@ public class ReservedSlotResource {
 				s.setDate(sessionDTO.getDate());
 				s.setId(i+1L);
 				//add doctorid
-				reservedSlotService.save(s);
+				//reservedSlotService.save(s);
 				slots.add(s);
 
 				startTime = s.getStartTime();
