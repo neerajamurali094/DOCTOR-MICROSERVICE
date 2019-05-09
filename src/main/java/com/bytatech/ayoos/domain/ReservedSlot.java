@@ -19,7 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "reserved_slot")
 @Document(indexName = "reservedslot")
-public class ReservedSlot implements Serializable {
+public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
 
     private static final long serialVersionUID = 1L;
     
@@ -141,7 +141,7 @@ public class ReservedSlot implements Serializable {
         if (reservedSlot.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), reservedSlot.getId());
+        return Objects.equals(getStartTime(), reservedSlot.getStartTime());
     }
 
     @Override
@@ -158,4 +158,19 @@ public class ReservedSlot implements Serializable {
             ", endTime=" + getEndTime() +
             "}";
     }
+    
+    
+
+    public int compareTo(ReservedSlot slot) {
+
+		Double d1 = 00.00;
+
+		Double d2 = 00.00;
+		d1=this.getStartTime();
+		d2=slot.getStartTime();
+		System.out.println("COMPARE:                     "+ d1.compareTo(d2));
+		return d1.compareTo(d2);
+	}
+    
+    
 }

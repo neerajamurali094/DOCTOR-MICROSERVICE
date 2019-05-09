@@ -23,12 +23,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -166,12 +169,14 @@ public class ReservedSlotResource {
     
     @PostMapping("/slot/{date}")
     
-	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date) {
+	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date,Pageable pageable) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
 
-		List<ReservedSlotDTO> slots = new ArrayList<ReservedSlotDTO>();
-
+		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
+		List<ReservedSlotDTO> reservedSlots=reservedSlotService.findAll(pageable).getContent();
+		//TreeSet<ReservedSlot> treeSet= new TreeSet<ReservedSlot>();
+		
 		Double startTime = 0.0;
 		Double endTime = 0.0;
 
@@ -189,21 +194,33 @@ public class ReservedSlotResource {
 					s.setStartTime(endTime);
 
 				}
-
-				s.setEndTime(s.getStartTime() + (sessionDTO.getInterval()+0));
+				  BigDecimal bd = new BigDecimal(s.getStartTime() + (sessionDTO.getInterval())).setScale(2, RoundingMode.HALF_UP);
+			     
+				s.setEndTime(bd.doubleValue());
 				s.setDate(sessionDTO.getDate());
 				s.setId(i+1L);
 				//add doctorid
-				//reservedSlotService.save(s);
-				slots.add(s);
+				
+				slotsDump.add(s);
 
 				startTime = s.getStartTime();
 				endTime = s.getEndTime();
 			}
 
+			
 		}
+		List<ReservedSlotDTO> unreservedSlots=new ArrayList<ReservedSlotDTO>();
+		for(ReservedSlotDTO dto1:slotsDump){
+			for(ReservedSlotDTO dto2:reservedSlots){
+			if(!dto1.equals(dto2)){
+				unreservedSlots.add(dto1);
+			}
+		
+			}
+		}
+		
 
-		return slots;
+		return unreservedSlots;
 
 	}
     

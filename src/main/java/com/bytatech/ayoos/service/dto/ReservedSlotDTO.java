@@ -72,6 +72,10 @@ public class ReservedSlotDTO implements Serializable {
         if (reservedSlotDTO.getId() == null || getId() == null) {
             return false;
         }
+        
+        if(reservedSlotDTO.getStartTime()==getStartTime()&&reservedSlotDTO.getDoctorId()==getDoctorId()){
+        	return true;
+        }
         return Objects.equals(getId(), reservedSlotDTO.getId());
     }
 
