@@ -65,7 +65,10 @@ public class SessionInfoDTO implements Serializable {
     }
 
     public void setFromTime(Double fromTime) {
-        this.fromTime = fromTime;
+   
+    		   this.fromTime = fromTime;
+    	
+     
     }
 
     public Double getToTime() {
@@ -73,7 +76,10 @@ public class SessionInfoDTO implements Serializable {
     }
 
     public void setToTime(Double toTime) {
-        this.toTime = toTime;
+    	if(toTime>fromTime){
+    		this.toTime = toTime;
+    	}
+        
     }
 
     public Double getInterval() {
