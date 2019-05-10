@@ -1,4 +1,5 @@
 package com.bytatech.ayoos.web.rest;
+
 import com.bytatech.ayoos.domain.ReservedSlot;
 import com.bytatech.ayoos.domain.SessionInfo;
 import com.bytatech.ayoos.service.ReservedSlotService;
@@ -43,209 +44,238 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class ReservedSlotResource {
 
-    private final Logger log = LoggerFactory.getLogger(ReservedSlotResource.class);
+	private final Logger log = LoggerFactory.getLogger(ReservedSlotResource.class);
 
-    private static final String ENTITY_NAME = "doctorReservedSlot";
+	private static final String ENTITY_NAME = "doctorReservedSlot";
 
-    private final ReservedSlotService reservedSlotService;
-    @Autowired
-    private  StatusService statusService;
-    @Autowired
-    private  SessionInfoService sessionInfoService;
-    @Autowired
-    private ReservedSlotMapper reservedSlotMapper;
-    public ReservedSlotResource(ReservedSlotService reservedSlotService) {
-        this.reservedSlotService = reservedSlotService;
-    }
+	private final ReservedSlotService reservedSlotService;
+	@Autowired
+	private StatusService statusService;
+	@Autowired
+	private SessionInfoService sessionInfoService;
+	@Autowired
+	private ReservedSlotMapper reservedSlotMapper;
 
-    /**
-     * POST  /reserved-slots : Create a new reservedSlot.
-     *
-     * @param reservedSlotDTO the reservedSlotDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new reservedSlotDTO, or with status 400 (Bad Request) if the reservedSlot has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/reserved-slots")
-    public ResponseEntity<ReservedSlotDTO> createReservedSlot(@RequestBody ReservedSlotDTO reservedSlotDTO) throws URISyntaxException {
-        log.debug("REST request to save ReservedSlot : {}", reservedSlotDTO);
-        if (reservedSlotDTO.getId() != null) {
-            throw new BadRequestAlertException("A new reservedSlot cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        ReservedSlotDTO resultDTO = reservedSlotService.save(reservedSlotDTO);
-        if (resultDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        ReservedSlotDTO result = reservedSlotService.save(resultDTO);
-        return ResponseEntity.created(new URI("/api/reserved-slots/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+	public ReservedSlotResource(ReservedSlotService reservedSlotService) {
+		this.reservedSlotService = reservedSlotService;
+	}
 
-    /**
-     * PUT  /reserved-slots : Updates an existing reservedSlot.
-     *
-     * @param reservedSlotDTO the reservedSlotDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated reservedSlotDTO,
-     * or with status 400 (Bad Request) if the reservedSlotDTO is not valid,
-     * or with status 500 (Internal Server Error) if the reservedSlotDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/reserved-slots")
-    public ResponseEntity<ReservedSlotDTO> updateReservedSlot(@RequestBody ReservedSlotDTO reservedSlotDTO) throws URISyntaxException {
-        log.debug("REST request to update ReservedSlot : {}", reservedSlotDTO);
-        if (reservedSlotDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        ReservedSlotDTO result = reservedSlotService.save(reservedSlotDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, reservedSlotDTO.getId().toString()))
-            .body(result);
-    }
+	/**
+	 * POST /reserved-slots : Create a new reservedSlot.
+	 *
+	 * @param reservedSlotDTO
+	 *            the reservedSlotDTO to create
+	 * @return the ResponseEntity with status 201 (Created) and with body the
+	 *         new reservedSlotDTO, or with status 400 (Bad Request) if the
+	 *         reservedSlot has already an ID
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PostMapping("/reserved-slots")
+	public ResponseEntity<ReservedSlotDTO> createReservedSlot(@RequestBody ReservedSlotDTO reservedSlotDTO)
+			throws URISyntaxException {
+		log.debug("REST request to save ReservedSlot : {}", reservedSlotDTO);
+		if (reservedSlotDTO.getId() != null) {
+			throw new BadRequestAlertException("A new reservedSlot cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+		ReservedSlotDTO resultDTO = reservedSlotService.save(reservedSlotDTO);
+		if (resultDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		ReservedSlotDTO result = reservedSlotService.save(resultDTO);
+		return ResponseEntity.created(new URI("/api/reserved-slots/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+	}
 
-    /**
-     * GET  /reserved-slots : get all the reservedSlots.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of reservedSlots in body
-     */
-    @GetMapping("/reserved-slots")
-    public ResponseEntity<List<ReservedSlotDTO>> getAllReservedSlots(Pageable pageable) {
-        log.debug("REST request to get a page of ReservedSlots");
-        Page<ReservedSlotDTO> page = reservedSlotService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reserved-slots");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+	/**
+	 * PUT /reserved-slots : Updates an existing reservedSlot.
+	 *
+	 * @param reservedSlotDTO
+	 *            the reservedSlotDTO to update
+	 * @return the ResponseEntity with status 200 (OK) and with body the updated
+	 *         reservedSlotDTO, or with status 400 (Bad Request) if the
+	 *         reservedSlotDTO is not valid, or with status 500 (Internal Server
+	 *         Error) if the reservedSlotDTO couldn't be updated
+	 * @throws URISyntaxException
+	 *             if the Location URI syntax is incorrect
+	 */
+	@PutMapping("/reserved-slots")
+	public ResponseEntity<ReservedSlotDTO> updateReservedSlot(@RequestBody ReservedSlotDTO reservedSlotDTO)
+			throws URISyntaxException {
+		log.debug("REST request to update ReservedSlot : {}", reservedSlotDTO);
+		if (reservedSlotDTO.getId() == null) {
+			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+		}
+		ReservedSlotDTO result = reservedSlotService.save(reservedSlotDTO);
+		return ResponseEntity.ok()
+				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, reservedSlotDTO.getId().toString()))
+				.body(result);
+	}
 
-    /**
-     * GET  /reserved-slots/:id : get the "id" reservedSlot.
-     *
-     * @param id the id of the reservedSlotDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the reservedSlotDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/reserved-slots/{id}")
-    public ResponseEntity<ReservedSlotDTO> getReservedSlot(@PathVariable Long id) {
-        log.debug("REST request to get ReservedSlot : {}", id);
-        Optional<ReservedSlotDTO> reservedSlotDTO = reservedSlotService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(reservedSlotDTO);
-    }
+	/**
+	 * GET /reserved-slots : get all the reservedSlots.
+	 *
+	 * @param pageable
+	 *            the pagination information
+	 * @return the ResponseEntity with status 200 (OK) and the list of
+	 *         reservedSlots in body
+	 */
+	@GetMapping("/reserved-slots")
+	public ResponseEntity<List<ReservedSlotDTO>> getAllReservedSlots(Pageable pageable) {
+		log.debug("REST request to get a page of ReservedSlots");
+		Page<ReservedSlotDTO> page = reservedSlotService.findAll(pageable);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reserved-slots");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
+	}
 
-    /**
-     * DELETE  /reserved-slots/:id : delete the "id" reservedSlot.
-     *
-     * @param id the id of the reservedSlotDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/reserved-slots/{id}")
-    public ResponseEntity<Void> deleteReservedSlot(@PathVariable Long id) {
-        log.debug("REST request to delete ReservedSlot : {}", id);
-        reservedSlotService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
+	/**
+	 * GET /reserved-slots/:id : get the "id" reservedSlot.
+	 *
+	 * @param id
+	 *            the id of the reservedSlotDTO to retrieve
+	 * @return the ResponseEntity with status 200 (OK) and with body the
+	 *         reservedSlotDTO, or with status 404 (Not Found)
+	 */
+	@GetMapping("/reserved-slots/{id}")
+	public ResponseEntity<ReservedSlotDTO> getReservedSlot(@PathVariable Long id) {
+		log.debug("REST request to get ReservedSlot : {}", id);
+		Optional<ReservedSlotDTO> reservedSlotDTO = reservedSlotService.findOne(id);
+		return ResponseUtil.wrapOrNotFound(reservedSlotDTO);
+	}
 
-    /**
-     * SEARCH  /_search/reserved-slots?query=:query : search for the reservedSlot corresponding
-     * to the query.
-     *
-     * @param query the query of the reservedSlot search
-     * @param pageable the pagination information
-     * @return the result of the search
-     */
-    @GetMapping("/_search/reserved-slots")
-    public ResponseEntity<List<ReservedSlotDTO>> searchReservedSlots(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of ReservedSlots for query {}", query);
-        Page<ReservedSlotDTO> page = reservedSlotService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/reserved-slots");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+	/**
+	 * DELETE /reserved-slots/:id : delete the "id" reservedSlot.
+	 *
+	 * @param id
+	 *            the id of the reservedSlotDTO to delete
+	 * @return the ResponseEntity with status 200 (OK)
+	 */
+	@DeleteMapping("/reserved-slots/{id}")
+	public ResponseEntity<Void> deleteReservedSlot(@PathVariable Long id) {
+		log.debug("REST request to delete ReservedSlot : {}", id);
+		reservedSlotService.delete(id);
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+	}
 
-    @PostMapping("/reserved-slot/toDto")
-    public ResponseEntity<List<ReservedSlotDTO>> listToDto(@RequestBody List<ReservedSlot> reservedSlot) {
-    	 log.debug("REST request to convert to DTO");
-    	List<ReservedSlotDTO> dtos = new ArrayList<>();
-    	reservedSlot.forEach(a -> {dtos.add(reservedSlotMapper.toDto(a));});
-    	return ResponseEntity.ok().body(dtos);
-    }
-    
-    
-    @PostMapping("/slot/{date}")
-    
-	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date,Pageable pageable) {
+	/**
+	 * SEARCH /_search/reserved-slots?query=:query : search for the reservedSlot
+	 * corresponding to the query.
+	 *
+	 * @param query
+	 *            the query of the reservedSlot search
+	 * @param pageable
+	 *            the pagination information
+	 * @return the result of the search
+	 */
+	@GetMapping("/_search/reserved-slots")
+	public ResponseEntity<List<ReservedSlotDTO>> searchReservedSlots(@RequestParam String query, Pageable pageable) {
+		log.debug("REST request to search for a page of ReservedSlots for query {}", query);
+		Page<ReservedSlotDTO> page = reservedSlotService.search(query, pageable);
+		HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page,
+				"/api/_search/reserved-slots");
+		return ResponseEntity.ok().headers(headers).body(page.getContent());
+	}
+
+	@PostMapping("/reserved-slot/toDto")
+	public ResponseEntity<List<ReservedSlotDTO>> listToDto(@RequestBody List<ReservedSlot> reservedSlot) {
+		log.debug("REST request to convert to DTO");
+		List<ReservedSlotDTO> dtos = new ArrayList<>();
+		reservedSlot.forEach(a -> {
+			dtos.add(reservedSlotMapper.toDto(a));
+		});
+		return ResponseEntity.ok().body(dtos);
+	}
+	
+	@GetMapping("reserved-slot/findBydoctorId/{doctorId}")
+	public void findReservedSlotByDoctorId(@PathVariable Long doctorId){
+		
+		reservedSlotService.findByDoctorId(doctorId);
+	}
+
+	@PostMapping("/slot/{date}/{doctorId}")
+
+	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date, @PathVariable Long doctorId,Pageable pageable) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
 
 		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
-		List<ReservedSlotDTO> reservedSlots=reservedSlotService.findAll(pageable).getContent();
-		//TreeSet<ReservedSlot> treeSet= new TreeSet<ReservedSlot>();
+		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
 		
 		Double startTime = 0.0;
 		Double endTime = 0.0;
 
 		for (SessionInfoDTO sessionDTO : sessionList) {
-			
+
 			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
-				
+
 				ReservedSlotDTO s = new ReservedSlotDTO();
 
 				if (i == 0) {
 					s.setStartTime(sessionDTO.getFromTime());
 
 				} else {
-					//endTime = s.getToTime();
+					// endTime = s.getToTime();
 					s.setStartTime(endTime);
 
 				}
-				  BigDecimal bd = new BigDecimal(s.getStartTime() + (sessionDTO.getInterval())).setScale(2, RoundingMode.HALF_UP);
-			     
+				BigDecimal bd = new BigDecimal(s.getStartTime() + (sessionDTO.getInterval())).setScale(2,
+						RoundingMode.HALF_UP);
+
 				s.setEndTime(bd.doubleValue());
 				s.setDate(sessionDTO.getDate());
-				s.setId(i+1L);
-				//add doctorid
-				
+				s.setId(i + 1L);
+				s.setTokenNumber(i + 1);
+				// add doctorid
+               
 				slotsDump.add(s);
 
 				startTime = s.getStartTime();
 				endTime = s.getEndTime();
 			}
 
-			
 		}
-		List<ReservedSlotDTO> unreservedSlots=new ArrayList<ReservedSlotDTO>();
-		for(ReservedSlotDTO dto1:slotsDump){
-			for(ReservedSlotDTO dto2:reservedSlots){
-			if(!dto1.equals(dto2)){
+		List<ReservedSlotDTO> unreservedSlots = new ArrayList<ReservedSlotDTO>();
+		for (ReservedSlotDTO dto1 : slotsDump) {
+			if (!reservedSlots.isEmpty()) {
+				System.out.println("1111111111111111111111111111111"+reservedSlots);
+				for (ReservedSlotDTO dto2 : reservedSlots) {
+					if (!dto1.equals(dto2)) {
+						System.out.println("33333333333333333333333333333333333");
+						unreservedSlots.add(dto1);
+					}
+
+				}
+			} else {
+				System.out.println("2222222222222222222222222222222");
 				unreservedSlots.add(dto1);
 			}
-		
-			}
 		}
-		
 
 		return unreservedSlots;
 
 	}
-    
-    @GetMapping("/unReserved-slots")
-    public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable){
-    	List<ReservedSlotDTO> slots=reservedSlotService.findAll(pageable).getContent();
-    	List<ReservedSlotDTO> unreservedSlots=new ArrayList<ReservedSlotDTO>();
-    	for(ReservedSlotDTO slot:slots){
-  
-    	StatusDTO status=	statusService.findByReservedSlotId(slot.getId());
- 
-    	if(status!=null){
-    	
-    		if((status.getStatus().equalsIgnoreCase("booked"))){
-    			
-    			unreservedSlots.add(slot);
-    		}
-    	}
-    	}
-    	return unreservedSlots;
-    }
-    /*
-    @GetMapping("/status/{reserveredSlotId}")
-    public StatusDTO getStatus(@PathVariable Long reserveredSlotId){
-    	return statusService.findByReservedSlotId(reserveredSlotId);
-    }*/
-}
 
+	@GetMapping("/unReserved-slots")
+	public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable) {
+		List<ReservedSlotDTO> slots = reservedSlotService.findAll(pageable).getContent();
+		List<ReservedSlotDTO> unreservedSlots = new ArrayList<ReservedSlotDTO>();
+		for (ReservedSlotDTO slot : slots) {
+
+			StatusDTO status = statusService.findByReservedSlotId(slot.getId());
+
+			if (status != null) {
+
+				if ((status.getStatus().equalsIgnoreCase("booked"))) {
+
+					unreservedSlots.add(slot);
+				}
+			}
+		}
+		return unreservedSlots;
+	}
+	/*
+	 * @GetMapping("/status/{reserveredSlotId}") public StatusDTO
+	 * getStatus(@PathVariable Long reserveredSlotId){ return
+	 * statusService.findByReservedSlotId(reserveredSlotId); }
+	 */
+}

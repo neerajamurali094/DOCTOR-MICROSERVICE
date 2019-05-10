@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -109,4 +110,12 @@ public class ReservedSlotServiceImpl implements ReservedSlotService {
         return reservedSlotSearchRepository.search(queryStringQuery(query), pageable)
             .map(reservedSlotMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.ReservedSlotService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public List<ReservedSlotDTO> findByDoctorId(Long doctorId) {
+	return	reservedSlotMapper.toDto(reservedSlotRepository.findByDoctorId(doctorId));
+	}
 }

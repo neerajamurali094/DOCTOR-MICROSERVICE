@@ -19,7 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "reserved_slot")
 @Document(indexName = "reservedslot")
-public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
+public class ReservedSlot implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -35,6 +35,9 @@ public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
 
     @Column(name = "end_time")
     private Double endTime;
+
+    @Column(name = "token_number")
+    private Integer tokenNumber;
 
     @ManyToOne
     @JsonIgnoreProperties("reservedSlots")
@@ -90,6 +93,19 @@ public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
         this.endTime = endTime;
     }
 
+    public Integer getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public ReservedSlot tokenNumber(Integer tokenNumber) {
+        this.tokenNumber = tokenNumber;
+        return this;
+    }
+
+    public void setTokenNumber(Integer tokenNumber) {
+        this.tokenNumber = tokenNumber;
+    }
+
     public Doctor getDoctor() {
         return doctor;
     }
@@ -141,7 +157,8 @@ public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
         if (reservedSlot.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getStartTime(), reservedSlot.getStartTime());
+       
+        return (getStartTime()==reservedSlot.getStartTime()&&getDate()==reservedSlot.getDate()&&getDate()==reservedSlot.getDate()&&getDoctor()==reservedSlot.getDoctor());
     }
 
     @Override
@@ -156,21 +173,7 @@ public class ReservedSlot implements Serializable,Comparable<ReservedSlot> {
             ", date='" + getDate() + "'" +
             ", startTime=" + getStartTime() +
             ", endTime=" + getEndTime() +
+            ", tokenNumber=" + getTokenNumber() +
             "}";
     }
-    
-    
-
-    public int compareTo(ReservedSlot slot) {
-
-		Double d1 = 00.00;
-
-		Double d2 = 00.00;
-		d1=this.getStartTime();
-		d2=slot.getStartTime();
-		System.out.println("COMPARE:                     "+ d1.compareTo(d2));
-		return d1.compareTo(d2);
-	}
-    
-    
 }

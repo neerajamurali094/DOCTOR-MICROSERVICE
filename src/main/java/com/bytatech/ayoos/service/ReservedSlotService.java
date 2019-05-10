@@ -5,6 +5,7 @@ import com.bytatech.ayoos.service.dto.ReservedSlotDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,4 +54,9 @@ public interface ReservedSlotService {
      * @return the list of entities
      */
     Page<ReservedSlotDTO> search(String query, Pageable pageable);
+
+	/**
+	 * @param doctorId
+	 */
+	List<ReservedSlotDTO> findByDoctorId(Long doctorId);
 }

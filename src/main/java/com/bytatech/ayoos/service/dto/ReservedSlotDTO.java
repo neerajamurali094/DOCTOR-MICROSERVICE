@@ -16,6 +16,8 @@ public class ReservedSlotDTO implements Serializable {
 
     private Double endTime;
 
+    private Integer tokenNumber;
+
 
     private Long doctorId;
 
@@ -51,6 +53,14 @@ public class ReservedSlotDTO implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public void setTokenNumber(Integer tokenNumber) {
+        this.tokenNumber = tokenNumber;
+    }
+
     public Long getDoctorId() {
         return doctorId;
     }
@@ -72,10 +82,6 @@ public class ReservedSlotDTO implements Serializable {
         if (reservedSlotDTO.getId() == null || getId() == null) {
             return false;
         }
-        
-        if(reservedSlotDTO.getStartTime()==getStartTime()&&reservedSlotDTO.getDoctorId()==getDoctorId()){
-        	return true;
-        }
         return Objects.equals(getId(), reservedSlotDTO.getId());
     }
 
@@ -91,6 +97,7 @@ public class ReservedSlotDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", startTime=" + getStartTime() +
             ", endTime=" + getEndTime() +
+            ", tokenNumber=" + getTokenNumber() +
             ", doctor=" + getDoctorId() +
             "}";
     }

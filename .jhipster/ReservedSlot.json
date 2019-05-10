@@ -12,6 +12,10 @@
         {
             "fieldName": "endTime",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "tokenNumber",
+            "fieldType": "Integer"
         }
     ],
     "relationships": [

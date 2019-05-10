@@ -51,7 +51,8 @@ interval Double
 entity ReservedSlot{
 	date LocalDate,
  	startTime Double,
-	endTime Double
+	endTime Double,
+	tokenNumber Integer
 }
 
 entity PaymentSettings{

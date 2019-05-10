@@ -60,6 +60,9 @@ public class ReservedSlotResourceIntTest {
     private static final Double DEFAULT_END_TIME = 1D;
     private static final Double UPDATED_END_TIME = 2D;
 
+    private static final Integer DEFAULT_TOKEN_NUMBER = 1;
+    private static final Integer UPDATED_TOKEN_NUMBER = 2;
+
     @Autowired
     private ReservedSlotRepository reservedSlotRepository;
 
@@ -118,7 +121,8 @@ public class ReservedSlotResourceIntTest {
         ReservedSlot reservedSlot = new ReservedSlot()
             .date(DEFAULT_DATE)
             .startTime(DEFAULT_START_TIME)
-            .endTime(DEFAULT_END_TIME);
+            .endTime(DEFAULT_END_TIME)
+            .tokenNumber(DEFAULT_TOKEN_NUMBER);
         return reservedSlot;
     }
 
@@ -146,6 +150,7 @@ public class ReservedSlotResourceIntTest {
         assertThat(testReservedSlot.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testReservedSlot.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testReservedSlot.getEndTime()).isEqualTo(DEFAULT_END_TIME);
+        assertThat(testReservedSlot.getTokenNumber()).isEqualTo(DEFAULT_TOKEN_NUMBER);
 
         // Validate the ReservedSlot in Elasticsearch
         verify(mockReservedSlotSearchRepository, times(1)).save(testReservedSlot);
@@ -187,7 +192,8 @@ public class ReservedSlotResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(reservedSlot.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.doubleValue())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.doubleValue())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.doubleValue())))
+            .andExpect(jsonPath("$.[*].tokenNumber").value(hasItem(DEFAULT_TOKEN_NUMBER)));
     }
     
     @Test
@@ -203,7 +209,8 @@ public class ReservedSlotResourceIntTest {
             .andExpect(jsonPath("$.id").value(reservedSlot.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.startTime").value(DEFAULT_START_TIME.doubleValue()))
-            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.doubleValue()));
+            .andExpect(jsonPath("$.endTime").value(DEFAULT_END_TIME.doubleValue()))
+            .andExpect(jsonPath("$.tokenNumber").value(DEFAULT_TOKEN_NUMBER));
     }
 
     @Test
@@ -229,7 +236,8 @@ public class ReservedSlotResourceIntTest {
         updatedReservedSlot
             .date(UPDATED_DATE)
             .startTime(UPDATED_START_TIME)
-            .endTime(UPDATED_END_TIME);
+            .endTime(UPDATED_END_TIME)
+            .tokenNumber(UPDATED_TOKEN_NUMBER);
         ReservedSlotDTO reservedSlotDTO = reservedSlotMapper.toDto(updatedReservedSlot);
 
         restReservedSlotMockMvc.perform(put("/api/reserved-slots")
@@ -244,6 +252,7 @@ public class ReservedSlotResourceIntTest {
         assertThat(testReservedSlot.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testReservedSlot.getStartTime()).isEqualTo(UPDATED_START_TIME);
         assertThat(testReservedSlot.getEndTime()).isEqualTo(UPDATED_END_TIME);
+        assertThat(testReservedSlot.getTokenNumber()).isEqualTo(UPDATED_TOKEN_NUMBER);
 
         // Validate the ReservedSlot in Elasticsearch
         verify(mockReservedSlotSearchRepository, times(1)).save(testReservedSlot);
@@ -306,7 +315,8 @@ public class ReservedSlotResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(reservedSlot.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].startTime").value(hasItem(DEFAULT_START_TIME.doubleValue())))
-            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.doubleValue())));
+            .andExpect(jsonPath("$.[*].endTime").value(hasItem(DEFAULT_END_TIME.doubleValue())))
+            .andExpect(jsonPath("$.[*].tokenNumber").value(hasItem(DEFAULT_TOKEN_NUMBER)));
     }
 
     @Test
