@@ -109,4 +109,5 @@ public class DoctorSettingsServiceImpl implements DoctorSettingsService {
         return doctorSettingsSearchRepository.search(queryStringQuery(query), pageable)
             .map(doctorSettingsMapper::toDto);
     }
+
 }

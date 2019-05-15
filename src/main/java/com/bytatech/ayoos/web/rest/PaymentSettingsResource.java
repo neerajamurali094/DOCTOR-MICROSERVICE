@@ -161,5 +161,7 @@ public class PaymentSettingsResource {
     	 log.debug("REST request to convert to DTO");
     	return ResponseEntity.ok().body(paymentSettingsMapper.toDto(paymentSettings));
     }
+    
+   
 }
 

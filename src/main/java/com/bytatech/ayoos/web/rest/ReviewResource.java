@@ -157,4 +157,8 @@ public class ReviewResource {
     }
     
 
+    @GetMapping("review/findByDoctorId/{doctorId}")
+    public List<ReviewDTO> getReviewByDoctorId(@PathVariable Long doctorId){
+    return	reviewService.findByDoctorId(doctorId);
+    }
 }

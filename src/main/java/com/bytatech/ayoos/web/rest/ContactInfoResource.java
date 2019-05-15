@@ -161,5 +161,5 @@ public class ContactInfoResource {
     	return ResponseEntity.ok().body(contactInfoMapper.toDto(contactInfo));
     }
     
-    
+  
 }

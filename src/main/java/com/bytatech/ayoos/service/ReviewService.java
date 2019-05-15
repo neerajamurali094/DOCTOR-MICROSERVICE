@@ -5,6 +5,7 @@ import com.bytatech.ayoos.service.dto.ReviewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,4 +54,10 @@ public interface ReviewService {
      * @return the list of entities
      */
     Page<ReviewDTO> search(String query, Pageable pageable);
+
+	/**
+	 * @param doctorId
+	 * @return
+	 */
+	List<ReviewDTO> findByDoctorId(Long doctorId);
 }

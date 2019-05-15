@@ -1,5 +1,6 @@
 package com.bytatech.ayoos.service;
 
+import com.bytatech.ayoos.domain.DoctorSettings;
 import com.bytatech.ayoos.service.dto.DoctorSettingsDTO;
 
 import org.springframework.data.domain.Page;
@@ -53,4 +54,8 @@ public interface DoctorSettingsService {
      * @return the list of entities
      */
     Page<DoctorSettingsDTO> search(String query, Pageable pageable);
+
+	
+
+	
 }

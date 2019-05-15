@@ -112,7 +112,9 @@ public class DoctorSettingsResource {
     }
 
     /**
-     * DELETE  /doctor-settings/:id : delete the "id" doctorSettings.
+     * DELETE  /doctor-settings/:id : delete the "id" doctorSettings.3
+     * 
+     * 
      *
      * @param id the id of the doctorSettingsDTO to delete
      * @return the ResponseEntity with status 200 (OK)
@@ -140,4 +142,6 @@ public class DoctorSettingsResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    
+    
 }

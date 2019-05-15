@@ -109,4 +109,9 @@ public class ContactInfoServiceImpl implements ContactInfoService {
         return contactInfoSearchRepository.search(queryStringQuery(query), pageable)
             .map(contactInfoMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.ContactInfoService#findByDoctorId(java.lang.Long)
+	 */
+	
 }

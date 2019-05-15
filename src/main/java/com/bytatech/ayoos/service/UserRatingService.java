@@ -5,6 +5,7 @@ import com.bytatech.ayoos.service.dto.UserRatingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,4 +54,10 @@ public interface UserRatingService {
      * @return the list of entities
      */
     Page<UserRatingDTO> search(String query, Pageable pageable);
+
+	/**
+	 * @param doctorId
+	 * @return 
+	 */
+	List<UserRatingDTO> findByDoctorId(Long doctorId);
 }

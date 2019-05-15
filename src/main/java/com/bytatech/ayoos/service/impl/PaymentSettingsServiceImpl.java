@@ -109,4 +109,9 @@ public class PaymentSettingsServiceImpl implements PaymentSettingsService {
         return paymentSettingsSearchRepository.search(queryStringQuery(query), pageable)
             .map(paymentSettingsMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.PaymentSettingsService#findByDoctorId(java.lang.Long)
+	 */
+	
 }

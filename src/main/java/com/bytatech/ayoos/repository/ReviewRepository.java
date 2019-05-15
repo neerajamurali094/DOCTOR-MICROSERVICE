@@ -1,6 +1,9 @@
 package com.bytatech.ayoos.repository;
 
 import com.bytatech.ayoos.domain.Review;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +14,13 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+	/**
+	 * @param doctorId
+	 * @return
+	 */
+	List<Review> findByDoctorId(Long doctorId);
+
+
 
 }

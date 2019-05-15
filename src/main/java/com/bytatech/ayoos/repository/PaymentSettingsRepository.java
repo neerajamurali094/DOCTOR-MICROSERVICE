@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentSettingsRepository extends JpaRepository<PaymentSettings, Long> {
 
+	
+
 }

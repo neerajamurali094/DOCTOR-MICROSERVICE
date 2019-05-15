@@ -53,4 +53,6 @@ public interface PaymentSettingsService {
      * @return the list of entities
      */
     Page<PaymentSettingsDTO> search(String query, Pageable pageable);
+
+	
 }

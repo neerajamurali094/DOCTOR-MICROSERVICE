@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -109,4 +110,12 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewSearchRepository.search(queryStringQuery(query), pageable)
             .map(reviewMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.ReviewService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public List<ReviewDTO> findByDoctorId(Long doctorId) {
+		return reviewMapper.toDto(reviewRepository.findByDoctorId(doctorId));
+	}
 }

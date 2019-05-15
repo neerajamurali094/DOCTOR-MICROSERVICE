@@ -203,4 +203,8 @@ public class UserRatingResource {
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
+	@GetMapping("/user-ratings/findBydoctorId/{doctorId}")
+	public List<UserRatingDTO> getUserRatingBydoctorId(@PathVariable Long doctorId){
+		return userRatingService.findByDoctorId(doctorId);
+	}
 }

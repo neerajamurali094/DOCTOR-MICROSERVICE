@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -109,4 +110,12 @@ public class UserRatingServiceImpl implements UserRatingService {
         return userRatingSearchRepository.search(queryStringQuery(query), pageable)
             .map(userRatingMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.UserRatingService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public List<UserRatingDTO> findByDoctorId(Long doctorId) {
+		return userRatingMapper.toDto(userRatingRepository.findByDoctorId(doctorId));
+	}
 }
