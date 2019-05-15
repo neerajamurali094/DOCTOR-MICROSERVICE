@@ -109,4 +109,14 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorSearchRepository.search(queryStringQuery(query), pageable)
             .map(doctorMapper::toDto);
     }
+
+	/* (non-Javadoc)
+	 * @see com.bytatech.ayoos.service.DoctorService#findByDoctorId(java.lang.Long)
+	 */
+	@Override
+	public DoctorDTO findByDoctorId(Long doctorId) {
+		 log.debug("Request to get Doctor : {}", doctorId);
+		 return   doctorMapper.toDto(doctorRepository.findByDoctorId(doctorId));
+	         
+	}
 }

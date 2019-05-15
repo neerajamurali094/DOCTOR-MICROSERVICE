@@ -25,10 +25,18 @@ public class DoctorDTO implements Serializable {
 
     private Double totalRating;
 
+    private String firstName;
+
+    private String email;
+
+    private Long phoneNumber;
+
 
     private Long contactInfoId;
 
     private Long paymentSettingsId;
+
+    private Long doctorSettingsId;
 
     public Long getId() {
         return id;
@@ -94,6 +102,30 @@ public class DoctorDTO implements Serializable {
         this.totalRating = totalRating;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getContactInfoId() {
         return contactInfoId;
     }
@@ -108,6 +140,14 @@ public class DoctorDTO implements Serializable {
 
     public void setPaymentSettingsId(Long paymentSettingsId) {
         this.paymentSettingsId = paymentSettingsId;
+    }
+
+    public Long getDoctorSettingsId() {
+        return doctorSettingsId;
+    }
+
+    public void setDoctorSettingsId(Long doctorSettingsId) {
+        this.doctorSettingsId = doctorSettingsId;
     }
 
     @Override
@@ -141,8 +181,12 @@ public class DoctorDTO implements Serializable {
             ", registerNumber='" + getRegisterNumber() + "'" +
             ", practiceSince='" + getPracticeSince() + "'" +
             ", totalRating=" + getTotalRating() +
+            ", firstName='" + getFirstName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber=" + getPhoneNumber() +
             ", contactInfo=" + getContactInfoId() +
             ", paymentSettings=" + getPaymentSettingsId() +
+            ", doctorSettings=" + getDoctorSettingsId() +
             "}";
     }
 }

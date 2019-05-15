@@ -119,6 +119,13 @@ public class DoctorResource {
         return ResponseUtil.wrapOrNotFound(doctorDTO);
     }
 
+    
+    @GetMapping("/doctors/{doctorId}")
+    public ResponseEntity<DoctorDTO> getDoctorByDoctorId(@PathVariable Long doctorId) {
+        log.debug("REST request to get Doctor : {}", doctorId);
+        DoctorDTO doctorDTO = doctorService.findByDoctorId(doctorId);
+        return ResponseUtil.wrapOrNotFound(Optional.of(doctorDTO));
+    }
     /**
      * DELETE  /doctors/:id : delete the "id" doctor.
      *

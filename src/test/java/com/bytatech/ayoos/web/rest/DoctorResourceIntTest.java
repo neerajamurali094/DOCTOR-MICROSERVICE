@@ -75,6 +75,15 @@ public class DoctorResourceIntTest {
     private static final Double DEFAULT_TOTAL_RATING = 1D;
     private static final Double UPDATED_TOTAL_RATING = 2D;
 
+    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final Long DEFAULT_PHONE_NUMBER = 1L;
+    private static final Long UPDATED_PHONE_NUMBER = 2L;
+
     @Autowired
     private DoctorRepository doctorRepository;
 
@@ -137,7 +146,10 @@ public class DoctorResourceIntTest {
             .specialization(DEFAULT_SPECIALIZATION)
             .registerNumber(DEFAULT_REGISTER_NUMBER)
             .practiceSince(DEFAULT_PRACTICE_SINCE)
-            .totalRating(DEFAULT_TOTAL_RATING);
+            .totalRating(DEFAULT_TOTAL_RATING)
+            .firstName(DEFAULT_FIRST_NAME)
+            .email(DEFAULT_EMAIL)
+            .phoneNumber(DEFAULT_PHONE_NUMBER);
         return doctor;
     }
 
@@ -169,6 +181,9 @@ public class DoctorResourceIntTest {
         assertThat(testDoctor.getRegisterNumber()).isEqualTo(DEFAULT_REGISTER_NUMBER);
         assertThat(testDoctor.getPracticeSince()).isEqualTo(DEFAULT_PRACTICE_SINCE);
         assertThat(testDoctor.getTotalRating()).isEqualTo(DEFAULT_TOTAL_RATING);
+        assertThat(testDoctor.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
+        assertThat(testDoctor.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testDoctor.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
 
         // Validate the Doctor in Elasticsearch
         verify(mockDoctorSearchRepository, times(1)).save(testDoctor);
@@ -214,7 +229,10 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.[*].specialization").value(hasItem(DEFAULT_SPECIALIZATION.toString())))
             .andExpect(jsonPath("$.[*].registerNumber").value(hasItem(DEFAULT_REGISTER_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(sameInstant(DEFAULT_PRACTICE_SINCE))))
-            .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())));
+            .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.intValue())));
     }
     
     @Test
@@ -234,7 +252,10 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.specialization").value(DEFAULT_SPECIALIZATION.toString()))
             .andExpect(jsonPath("$.registerNumber").value(DEFAULT_REGISTER_NUMBER.toString()))
             .andExpect(jsonPath("$.practiceSince").value(sameInstant(DEFAULT_PRACTICE_SINCE)))
-            .andExpect(jsonPath("$.totalRating").value(DEFAULT_TOTAL_RATING.doubleValue()));
+            .andExpect(jsonPath("$.totalRating").value(DEFAULT_TOTAL_RATING.doubleValue()))
+            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.intValue()));
     }
 
     @Test
@@ -264,7 +285,10 @@ public class DoctorResourceIntTest {
             .specialization(UPDATED_SPECIALIZATION)
             .registerNumber(UPDATED_REGISTER_NUMBER)
             .practiceSince(UPDATED_PRACTICE_SINCE)
-            .totalRating(UPDATED_TOTAL_RATING);
+            .totalRating(UPDATED_TOTAL_RATING)
+            .firstName(UPDATED_FIRST_NAME)
+            .email(UPDATED_EMAIL)
+            .phoneNumber(UPDATED_PHONE_NUMBER);
         DoctorDTO doctorDTO = doctorMapper.toDto(updatedDoctor);
 
         restDoctorMockMvc.perform(put("/api/doctors")
@@ -283,6 +307,9 @@ public class DoctorResourceIntTest {
         assertThat(testDoctor.getRegisterNumber()).isEqualTo(UPDATED_REGISTER_NUMBER);
         assertThat(testDoctor.getPracticeSince()).isEqualTo(UPDATED_PRACTICE_SINCE);
         assertThat(testDoctor.getTotalRating()).isEqualTo(UPDATED_TOTAL_RATING);
+        assertThat(testDoctor.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testDoctor.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testDoctor.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
 
         // Validate the Doctor in Elasticsearch
         verify(mockDoctorSearchRepository, times(1)).save(testDoctor);
@@ -349,7 +376,10 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.[*].specialization").value(hasItem(DEFAULT_SPECIALIZATION)))
             .andExpect(jsonPath("$.[*].registerNumber").value(hasItem(DEFAULT_REGISTER_NUMBER)))
             .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(sameInstant(DEFAULT_PRACTICE_SINCE))))
-            .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())));
+            .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.intValue())));
     }
 
     @Test

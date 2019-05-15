@@ -224,7 +224,11 @@ public class SessionInfoResource {
 						s.setFromTime(sDTO.getFromTime());
 						s.setToTime(sDTO.getToTime());
 						s.setInterval(sDTO.getInterval());
-						
+						/*if(s.getFromTime()<=11){
+							s.setSessionName("Morning Session");
+						}else if(s.getFromTime()>11&&s.getFromTime()>=14){
+							s.setSessionName("Morning Session");
+						}else if(s.getFromTime()>14)*/
 						WorkPlaceDTO workplaceDTO = workPlaceService.findOne(sDTO.getWorkPlaceId()).get();
 						s.setWorkPlace(workPlaceMapper.toEntity(workplaceDTO));
 						

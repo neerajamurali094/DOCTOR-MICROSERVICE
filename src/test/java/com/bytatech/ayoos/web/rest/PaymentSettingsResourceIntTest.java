@@ -49,8 +49,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DoctorApp.class)
 public class PaymentSettingsResourceIntTest {
 
+    private static final Boolean DEFAULT_IS_PAYMENT_ENABLED = false;
+    private static final Boolean UPDATED_IS_PAYMENT_ENABLED = true;
+
     private static final Double DEFAULT_AMOUNT = 1D;
     private static final Double UPDATED_AMOUNT = 2D;
+
+    private static final String DEFAULT_PAYMENT_METHOD = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_METHOD = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
+    private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_INTENT = "AAAAAAAAAA";
+    private static final String UPDATED_INTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NOTE_TO_PAYER = "AAAAAAAAAA";
+    private static final String UPDATED_NOTE_TO_PAYER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PAYMENT_GATEWAY_PROVIDER = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_GATEWAY_PROVIDER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PAYMENT_GATEWAY_CREDENTIALS = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_GATEWAY_CREDENTIALS = "BBBBBBBBBB";
 
     @Autowired
     private PaymentSettingsRepository paymentSettingsRepository;
@@ -108,7 +129,14 @@ public class PaymentSettingsResourceIntTest {
      */
     public static PaymentSettings createEntity(EntityManager em) {
         PaymentSettings paymentSettings = new PaymentSettings()
-            .amount(DEFAULT_AMOUNT);
+            .isPaymentEnabled(DEFAULT_IS_PAYMENT_ENABLED)
+            .amount(DEFAULT_AMOUNT)
+            .paymentMethod(DEFAULT_PAYMENT_METHOD)
+            .currency(DEFAULT_CURRENCY)
+            .intent(DEFAULT_INTENT)
+            .noteToPayer(DEFAULT_NOTE_TO_PAYER)
+            .paymentGatewayProvider(DEFAULT_PAYMENT_GATEWAY_PROVIDER)
+            .paymentGatewayCredentials(DEFAULT_PAYMENT_GATEWAY_CREDENTIALS);
         return paymentSettings;
     }
 
@@ -133,7 +161,14 @@ public class PaymentSettingsResourceIntTest {
         List<PaymentSettings> paymentSettingsList = paymentSettingsRepository.findAll();
         assertThat(paymentSettingsList).hasSize(databaseSizeBeforeCreate + 1);
         PaymentSettings testPaymentSettings = paymentSettingsList.get(paymentSettingsList.size() - 1);
+        assertThat(testPaymentSettings.isIsPaymentEnabled()).isEqualTo(DEFAULT_IS_PAYMENT_ENABLED);
         assertThat(testPaymentSettings.getAmount()).isEqualTo(DEFAULT_AMOUNT);
+        assertThat(testPaymentSettings.getPaymentMethod()).isEqualTo(DEFAULT_PAYMENT_METHOD);
+        assertThat(testPaymentSettings.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
+        assertThat(testPaymentSettings.getIntent()).isEqualTo(DEFAULT_INTENT);
+        assertThat(testPaymentSettings.getNoteToPayer()).isEqualTo(DEFAULT_NOTE_TO_PAYER);
+        assertThat(testPaymentSettings.getPaymentGatewayProvider()).isEqualTo(DEFAULT_PAYMENT_GATEWAY_PROVIDER);
+        assertThat(testPaymentSettings.getPaymentGatewayCredentials()).isEqualTo(DEFAULT_PAYMENT_GATEWAY_CREDENTIALS);
 
         // Validate the PaymentSettings in Elasticsearch
         verify(mockPaymentSettingsSearchRepository, times(1)).save(testPaymentSettings);
@@ -173,7 +208,14 @@ public class PaymentSettingsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(paymentSettings.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())));
+            .andExpect(jsonPath("$.[*].isPaymentEnabled").value(hasItem(DEFAULT_IS_PAYMENT_ENABLED.booleanValue())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
+            .andExpect(jsonPath("$.[*].paymentMethod").value(hasItem(DEFAULT_PAYMENT_METHOD.toString())))
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
+            .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
+            .andExpect(jsonPath("$.[*].noteToPayer").value(hasItem(DEFAULT_NOTE_TO_PAYER.toString())))
+            .andExpect(jsonPath("$.[*].paymentGatewayProvider").value(hasItem(DEFAULT_PAYMENT_GATEWAY_PROVIDER.toString())))
+            .andExpect(jsonPath("$.[*].paymentGatewayCredentials").value(hasItem(DEFAULT_PAYMENT_GATEWAY_CREDENTIALS.toString())));
     }
     
     @Test
@@ -187,7 +229,14 @@ public class PaymentSettingsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(paymentSettings.getId().intValue()))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()));
+            .andExpect(jsonPath("$.isPaymentEnabled").value(DEFAULT_IS_PAYMENT_ENABLED.booleanValue()))
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()))
+            .andExpect(jsonPath("$.paymentMethod").value(DEFAULT_PAYMENT_METHOD.toString()))
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()))
+            .andExpect(jsonPath("$.intent").value(DEFAULT_INTENT.toString()))
+            .andExpect(jsonPath("$.noteToPayer").value(DEFAULT_NOTE_TO_PAYER.toString()))
+            .andExpect(jsonPath("$.paymentGatewayProvider").value(DEFAULT_PAYMENT_GATEWAY_PROVIDER.toString()))
+            .andExpect(jsonPath("$.paymentGatewayCredentials").value(DEFAULT_PAYMENT_GATEWAY_CREDENTIALS.toString()));
     }
 
     @Test
@@ -211,7 +260,14 @@ public class PaymentSettingsResourceIntTest {
         // Disconnect from session so that the updates on updatedPaymentSettings are not directly saved in db
         em.detach(updatedPaymentSettings);
         updatedPaymentSettings
-            .amount(UPDATED_AMOUNT);
+            .isPaymentEnabled(UPDATED_IS_PAYMENT_ENABLED)
+            .amount(UPDATED_AMOUNT)
+            .paymentMethod(UPDATED_PAYMENT_METHOD)
+            .currency(UPDATED_CURRENCY)
+            .intent(UPDATED_INTENT)
+            .noteToPayer(UPDATED_NOTE_TO_PAYER)
+            .paymentGatewayProvider(UPDATED_PAYMENT_GATEWAY_PROVIDER)
+            .paymentGatewayCredentials(UPDATED_PAYMENT_GATEWAY_CREDENTIALS);
         PaymentSettingsDTO paymentSettingsDTO = paymentSettingsMapper.toDto(updatedPaymentSettings);
 
         restPaymentSettingsMockMvc.perform(put("/api/payment-settings")
@@ -223,7 +279,14 @@ public class PaymentSettingsResourceIntTest {
         List<PaymentSettings> paymentSettingsList = paymentSettingsRepository.findAll();
         assertThat(paymentSettingsList).hasSize(databaseSizeBeforeUpdate);
         PaymentSettings testPaymentSettings = paymentSettingsList.get(paymentSettingsList.size() - 1);
+        assertThat(testPaymentSettings.isIsPaymentEnabled()).isEqualTo(UPDATED_IS_PAYMENT_ENABLED);
         assertThat(testPaymentSettings.getAmount()).isEqualTo(UPDATED_AMOUNT);
+        assertThat(testPaymentSettings.getPaymentMethod()).isEqualTo(UPDATED_PAYMENT_METHOD);
+        assertThat(testPaymentSettings.getCurrency()).isEqualTo(UPDATED_CURRENCY);
+        assertThat(testPaymentSettings.getIntent()).isEqualTo(UPDATED_INTENT);
+        assertThat(testPaymentSettings.getNoteToPayer()).isEqualTo(UPDATED_NOTE_TO_PAYER);
+        assertThat(testPaymentSettings.getPaymentGatewayProvider()).isEqualTo(UPDATED_PAYMENT_GATEWAY_PROVIDER);
+        assertThat(testPaymentSettings.getPaymentGatewayCredentials()).isEqualTo(UPDATED_PAYMENT_GATEWAY_CREDENTIALS);
 
         // Validate the PaymentSettings in Elasticsearch
         verify(mockPaymentSettingsSearchRepository, times(1)).save(testPaymentSettings);
@@ -284,7 +347,14 @@ public class PaymentSettingsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(paymentSettings.getId().intValue())))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())));
+            .andExpect(jsonPath("$.[*].isPaymentEnabled").value(hasItem(DEFAULT_IS_PAYMENT_ENABLED.booleanValue())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
+            .andExpect(jsonPath("$.[*].paymentMethod").value(hasItem(DEFAULT_PAYMENT_METHOD)))
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY)))
+            .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT)))
+            .andExpect(jsonPath("$.[*].noteToPayer").value(hasItem(DEFAULT_NOTE_TO_PAYER)))
+            .andExpect(jsonPath("$.[*].paymentGatewayProvider").value(hasItem(DEFAULT_PAYMENT_GATEWAY_PROVIDER)))
+            .andExpect(jsonPath("$.[*].paymentGatewayCredentials").value(hasItem(DEFAULT_PAYMENT_GATEWAY_CREDENTIALS)));
     }
 
     @Test

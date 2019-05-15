@@ -1,6 +1,6 @@
 package com.bytatech.ayoos.service;
 
-import com.bytatech.ayoos.service.dto.DoctorDTO;
+import com.bytatech.ayoos.service.dto.DoctorSettingsDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,55 +8,49 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /**
- * Service Interface for managing Doctor.
+ * Service Interface for managing DoctorSettings.
  */
-public interface DoctorService {
+public interface DoctorSettingsService {
 
     /**
-     * Save a doctor.
+     * Save a doctorSettings.
      *
-     * @param doctorDTO the entity to save
+     * @param doctorSettingsDTO the entity to save
      * @return the persisted entity
      */
-    DoctorDTO save(DoctorDTO doctorDTO);
+    DoctorSettingsDTO save(DoctorSettingsDTO doctorSettingsDTO);
 
     /**
-     * Get all the doctors.
+     * Get all the doctorSettings.
      *
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<DoctorDTO> findAll(Pageable pageable);
+    Page<DoctorSettingsDTO> findAll(Pageable pageable);
 
 
     /**
-     * Get the "id" doctor.
+     * Get the "id" doctorSettings.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<DoctorDTO> findOne(Long id);
+    Optional<DoctorSettingsDTO> findOne(Long id);
 
     /**
-     * Delete the "id" doctor.
+     * Delete the "id" doctorSettings.
      *
      * @param id the id of the entity
      */
     void delete(Long id);
 
     /**
-     * Search for the doctor corresponding to the query.
+     * Search for the doctorSettings corresponding to the query.
      *
      * @param query the query of the search
      * 
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<DoctorDTO> search(String query, Pageable pageable);
-
-	/**
-	 * @param doctorId
-	 * @return
-	 */
-	DoctorDTO findByDoctorId(Long doctorId);
+    Page<DoctorSettingsDTO> search(String query, Pageable pageable);
 }

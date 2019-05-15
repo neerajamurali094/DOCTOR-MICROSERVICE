@@ -9,7 +9,21 @@ public class PaymentSettingsDTO implements Serializable {
 
     private Long id;
 
+    private Boolean isPaymentEnabled;
+
     private Double amount;
+
+    private String paymentMethod;
+
+    private String currency;
+
+    private String intent;
+
+    private String noteToPayer;
+
+    private String paymentGatewayProvider;
+
+    private String paymentGatewayCredentials;
 
 
     public Long getId() {
@@ -20,12 +34,68 @@ public class PaymentSettingsDTO implements Serializable {
         this.id = id;
     }
 
+    public Boolean isIsPaymentEnabled() {
+        return isPaymentEnabled;
+    }
+
+    public void setIsPaymentEnabled(Boolean isPaymentEnabled) {
+        this.isPaymentEnabled = isPaymentEnabled;
+    }
+
     public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getIntent() {
+        return intent;
+    }
+
+    public void setIntent(String intent) {
+        this.intent = intent;
+    }
+
+    public String getNoteToPayer() {
+        return noteToPayer;
+    }
+
+    public void setNoteToPayer(String noteToPayer) {
+        this.noteToPayer = noteToPayer;
+    }
+
+    public String getPaymentGatewayProvider() {
+        return paymentGatewayProvider;
+    }
+
+    public void setPaymentGatewayProvider(String paymentGatewayProvider) {
+        this.paymentGatewayProvider = paymentGatewayProvider;
+    }
+
+    public String getPaymentGatewayCredentials() {
+        return paymentGatewayCredentials;
+    }
+
+    public void setPaymentGatewayCredentials(String paymentGatewayCredentials) {
+        this.paymentGatewayCredentials = paymentGatewayCredentials;
     }
 
     @Override
@@ -53,7 +123,14 @@ public class PaymentSettingsDTO implements Serializable {
     public String toString() {
         return "PaymentSettingsDTO{" +
             "id=" + getId() +
+            ", isPaymentEnabled='" + isIsPaymentEnabled() + "'" +
             ", amount=" + getAmount() +
+            ", paymentMethod='" + getPaymentMethod() + "'" +
+            ", currency='" + getCurrency() + "'" +
+            ", intent='" + getIntent() + "'" +
+            ", noteToPayer='" + getNoteToPayer() + "'" +
+            ", paymentGatewayProvider='" + getPaymentGatewayProvider() + "'" +
+            ", paymentGatewayCredentials='" + getPaymentGatewayCredentials() + "'" +
             "}";
     }
 }

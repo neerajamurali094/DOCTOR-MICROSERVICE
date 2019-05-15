@@ -48,10 +48,24 @@
             <column name="total_rating" type="double">
                 <constraints nullable="true" />
             </column>
+
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="phone_number" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="contact_info_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_doctor_contact_info_id" />
             </column>            <column name="payment_settings_id" type="bigint">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_doctor_payment_settings_id" />
+            </column>            <column name="doctor_settings_id" type="bigint">
+                <constraints unique="true" nullable="true" uniqueConstraintName="ux_doctor_doctor_settings_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

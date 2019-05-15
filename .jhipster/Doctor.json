@@ -25,6 +25,18 @@
         {
             "fieldName": "totalRating",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "Long"
         }
     ],
     "relationships": [
@@ -40,6 +52,14 @@
             "relationshipType": "one-to-one",
             "relationshipName": "paymentSettings",
             "otherEntityName": "paymentSettings",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "doctor"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "doctorSettings",
+            "otherEntityName": "doctorSettings",
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "doctor"

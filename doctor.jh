@@ -4,7 +4,10 @@ entity Doctor {
     specialization String,
     registerNumber String,
     practiceSince ZonedDateTime,
-    totalRating Double
+    totalRating Double,
+    firstName String,
+    email String,
+    phoneNumber Long
 }
 
 entity ContactInfo{
@@ -56,12 +59,26 @@ entity ReservedSlot{
 }
 
 entity PaymentSettings{
-amount  Double
+  isPaymentEnabled Boolean ,
+  amount  Double,
+  paymentMethod String,
+  currency String,
+  intent String,
+  noteToPayer String,
+  paymentGatewayProvider String,
+  paymentGatewayCredentials String
+}
+
+entity DoctorSettings{
+  approvalType String,
+  isMailNotificationsEnabled Boolean,
+  isSMSNotificationsEnabled Boolean
 }
 
 relationship OneToOne{
 Doctor{contactInfo} to ContactInfo,
-Doctor{paymentSettings} to PaymentSettings
+Doctor{paymentSettings} to PaymentSettings,
+Doctor{doctorSettings} to DoctorSettings
 
 
 }

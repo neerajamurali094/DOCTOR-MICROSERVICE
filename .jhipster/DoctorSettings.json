@@ -1,0 +1,28 @@
+{
+    "name": "DoctorSettings",
+    "fields": [
+        {
+            "fieldName": "approvalType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isMailNotificationsEnabled",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "isSMSNotificationsEnabled",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190515051842",
+    "entityTableName": "doctor_settings",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "doctor",
+    "applications": "*",
+    "microserviceName": "doctor"
+}

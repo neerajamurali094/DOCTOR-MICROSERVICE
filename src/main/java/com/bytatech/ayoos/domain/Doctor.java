@@ -48,6 +48,15 @@ public class Doctor implements Serializable {
     @Column(name = "total_rating")
     private Double totalRating;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone_number")
+    private Long phoneNumber;
+
     @OneToOne
     @JoinColumn(unique = true)
     private ContactInfo contactInfo;
@@ -55,6 +64,10 @@ public class Doctor implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private PaymentSettings paymentSettings;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private DoctorSettings doctorSettings;
 
     @OneToMany(mappedBy = "doctor")
     private Set<WorkPlace> workPlaces = new HashSet<>();
@@ -166,6 +179,45 @@ public class Doctor implements Serializable {
         this.totalRating = totalRating;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public Doctor firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Doctor email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public Doctor phoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public ContactInfo getContactInfo() {
         return contactInfo;
     }
@@ -190,6 +242,19 @@ public class Doctor implements Serializable {
 
     public void setPaymentSettings(PaymentSettings paymentSettings) {
         this.paymentSettings = paymentSettings;
+    }
+
+    public DoctorSettings getDoctorSettings() {
+        return doctorSettings;
+    }
+
+    public Doctor doctorSettings(DoctorSettings doctorSettings) {
+        this.doctorSettings = doctorSettings;
+        return this;
+    }
+
+    public void setDoctorSettings(DoctorSettings doctorSettings) {
+        this.doctorSettings = doctorSettings;
     }
 
     public Set<WorkPlace> getWorkPlaces() {
@@ -349,6 +414,9 @@ public class Doctor implements Serializable {
             ", registerNumber='" + getRegisterNumber() + "'" +
             ", practiceSince='" + getPracticeSince() + "'" +
             ", totalRating=" + getTotalRating() +
+            ", firstName='" + getFirstName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber=" + getPhoneNumber() +
             "}";
     }
 }
