@@ -53,7 +53,11 @@ public class DoctorSettingsResource {
         if (doctorSettingsDTO.getId() != null) {
             throw new BadRequestAlertException("A new doctorSettings cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        DoctorSettingsDTO result = doctorSettingsService.save(doctorSettingsDTO);
+        DoctorSettingsDTO resultDTO = doctorSettingsService.save(doctorSettingsDTO);
+        if (resultDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        DoctorSettingsDTO result = doctorSettingsService.save(resultDTO);
         return ResponseEntity.created(new URI("/api/doctor-settings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
