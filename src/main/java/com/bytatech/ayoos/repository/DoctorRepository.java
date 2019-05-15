@@ -19,7 +19,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 	 * @param doctorId
 	 * @return
 	 */
-	Doctor findByDoctorId(Long doctorId);
+	Doctor findByDoctorId(String doctorId);
 
 
 }

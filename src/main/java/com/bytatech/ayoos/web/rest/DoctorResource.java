@@ -121,7 +121,7 @@ public class DoctorResource {
 
     
     @GetMapping("/doctors/{doctorId}")
-    public ResponseEntity<DoctorDTO> getDoctorByDoctorId(@PathVariable Long doctorId) {
+    public ResponseEntity<DoctorDTO> getDoctorByDoctorId(@PathVariable String doctorId) {
         log.debug("REST request to get Doctor : {}", doctorId);
         DoctorDTO doctorDTO = doctorService.findByDoctorId(doctorId);
         return ResponseUtil.wrapOrNotFound(Optional.of(doctorDTO));

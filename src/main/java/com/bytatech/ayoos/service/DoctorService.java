@@ -58,5 +58,5 @@ public interface DoctorService {
 	 * @param doctorId
 	 * @return
 	 */
-	DoctorDTO findByDoctorId(Long doctorId);
+	DoctorDTO findByDoctorId(String doctorId);
 }
