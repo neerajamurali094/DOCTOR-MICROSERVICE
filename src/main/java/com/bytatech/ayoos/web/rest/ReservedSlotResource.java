@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -194,7 +195,7 @@ public class ReservedSlotResource {
 
 	@PostMapping("/slot")
 
-	public List<ReservedSlotDTO> createSlot(@RequestParam LocalDate date, @RequestParam Long doctorId) {
+	public List<ReservedSlotDTO> createSlot(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date, @RequestParam Long doctorId) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
 
