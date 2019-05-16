@@ -195,9 +195,9 @@ public class ReservedSlotResource {
 
 	@PostMapping("/slot")
 
-	public List<ReservedSlotDTO> createSlot(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date, @RequestParam Long doctorId) {
+	public List<ReservedSlotDTO> createSlot(@RequestParam String date, @RequestParam Long doctorId) {
 
-		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
+		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(LocalDate.parse(date));
 
 		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
 		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
@@ -256,6 +256,10 @@ public class ReservedSlotResource {
 
 	}
 
+	@GetMapping("/test/{date}/{doctorId}")
+	public void test(@PathVariable LocalDate date,@PathVariable Long doctorId){
+		System.out.println("......................test................."+date+"............."+doctorId);
+	}
 	@GetMapping("/unReserved-slots")
 	public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable) {
 		List<ReservedSlotDTO> slots = reservedSlotService.findAll(pageable).getContent();
