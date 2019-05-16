@@ -6,6 +6,10 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "locationName",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "location",
             "fieldType": "String"
         }

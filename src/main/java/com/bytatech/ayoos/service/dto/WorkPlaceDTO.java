@@ -12,6 +12,9 @@ public class WorkPlaceDTO implements Serializable {
     private Long id;
 
     private String name;
+
+    private String locationName;
+
     @GeoPointField
     private String location;
 
@@ -32,6 +35,14 @@ public class WorkPlaceDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public String getLocation() {
@@ -76,6 +87,7 @@ public class WorkPlaceDTO implements Serializable {
         return "WorkPlaceDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", locationName='" + getLocationName() + "'" +
             ", location='" + getLocation() + "'" +
             ", doctor=" + getDoctorId() +
             "}";

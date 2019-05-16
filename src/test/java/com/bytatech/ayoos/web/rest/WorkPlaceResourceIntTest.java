@@ -52,6 +52,9 @@ public class WorkPlaceResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_LOCATION_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_LOCATION_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
 
@@ -112,6 +115,7 @@ public class WorkPlaceResourceIntTest {
     public static WorkPlace createEntity(EntityManager em) {
         WorkPlace workPlace = new WorkPlace()
             .name(DEFAULT_NAME)
+            .locationName(DEFAULT_LOCATION_NAME)
             .location(DEFAULT_LOCATION);
         return workPlace;
     }
@@ -138,6 +142,7 @@ public class WorkPlaceResourceIntTest {
         assertThat(workPlaceList).hasSize(databaseSizeBeforeCreate + 1);
         WorkPlace testWorkPlace = workPlaceList.get(workPlaceList.size() - 1);
         assertThat(testWorkPlace.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testWorkPlace.getLocationName()).isEqualTo(DEFAULT_LOCATION_NAME);
         assertThat(testWorkPlace.getLocation()).isEqualTo(DEFAULT_LOCATION);
 
         // Validate the WorkPlace in Elasticsearch
@@ -179,6 +184,7 @@ public class WorkPlaceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(workPlace.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].locationName").value(hasItem(DEFAULT_LOCATION_NAME.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())));
     }
     
@@ -194,6 +200,7 @@ public class WorkPlaceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(workPlace.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.locationName").value(DEFAULT_LOCATION_NAME.toString()))
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()));
     }
 
@@ -219,6 +226,7 @@ public class WorkPlaceResourceIntTest {
         em.detach(updatedWorkPlace);
         updatedWorkPlace
             .name(UPDATED_NAME)
+            .locationName(UPDATED_LOCATION_NAME)
             .location(UPDATED_LOCATION);
         WorkPlaceDTO workPlaceDTO = workPlaceMapper.toDto(updatedWorkPlace);
 
@@ -232,6 +240,7 @@ public class WorkPlaceResourceIntTest {
         assertThat(workPlaceList).hasSize(databaseSizeBeforeUpdate);
         WorkPlace testWorkPlace = workPlaceList.get(workPlaceList.size() - 1);
         assertThat(testWorkPlace.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testWorkPlace.getLocationName()).isEqualTo(UPDATED_LOCATION_NAME);
         assertThat(testWorkPlace.getLocation()).isEqualTo(UPDATED_LOCATION);
 
         // Validate the WorkPlace in Elasticsearch
@@ -294,6 +303,7 @@ public class WorkPlaceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(workPlace.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].locationName").value(hasItem(DEFAULT_LOCATION_NAME)))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)));
     }
 

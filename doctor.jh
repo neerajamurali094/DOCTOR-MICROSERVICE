@@ -19,6 +19,7 @@ entity ContactInfo{
 entity WorkPlace{
 
  name String,
+ locationName String,
  location String
 
 }

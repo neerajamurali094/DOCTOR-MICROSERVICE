@@ -28,9 +28,11 @@ public class WorkPlace implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
     @Column(name = "name")
     private String name;
+
+    @Column(name = "location_name")
+    private String locationName;
 
     @GeoPointField
     @Column(name = "location")
@@ -38,6 +40,7 @@ public class WorkPlace implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("workPlaces")
+    
     private Doctor doctor;
 
     @OneToMany(mappedBy = "workPlace")
@@ -62,6 +65,19 @@ public class WorkPlace implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public WorkPlace locationName(String locationName) {
+        this.locationName = locationName;
+        return this;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public String getLocation() {
@@ -141,6 +157,7 @@ public class WorkPlace implements Serializable {
         return "WorkPlace{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", locationName='" + getLocationName() + "'" +
             ", location='" + getLocation() + "'" +
             "}";
     }
