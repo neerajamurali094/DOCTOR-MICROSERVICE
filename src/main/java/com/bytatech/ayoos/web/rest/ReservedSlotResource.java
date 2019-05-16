@@ -195,9 +195,9 @@ public class ReservedSlotResource {
 
 	@PostMapping("/slot")
 
-	public List<ReservedSlotDTO> createSlot(@RequestParam String date, @RequestParam Long doctorId) {
+	public List<ReservedSlotDTO> createSlot(@RequestParam LocalDate date, @RequestParam Long doctorId) {
 
-		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(LocalDate.parse(date));
+		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
 
 		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
 		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
@@ -256,9 +256,69 @@ public class ReservedSlotResource {
 
 	}
 
-	@GetMapping("/test/{date}/{doctorId}")
-	public void test(@PathVariable LocalDate date,@PathVariable Long doctorId){
+	@GetMapping("/test1/{date}/{doctorId}")
+	public void test1(@PathVariable LocalDate date,@PathVariable Long doctorId){
 		System.out.println("......................test................."+date+"............."+doctorId);
+	}
+	@GetMapping("/test2/{date}/{doctorId}")
+	public List<ReservedSlotDTO> test2(@PathVariable String date,@PathVariable Long doctorId){
+
+		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(LocalDate.parse(date));
+
+		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
+		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
+		
+		Double startTime = 0.0;
+		Double endTime = 0.0;
+
+		for (SessionInfoDTO sessionDTO : sessionList) {
+
+			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
+
+				ReservedSlotDTO s = new ReservedSlotDTO();
+
+				if (i == 0) {
+					s.setStartTime(sessionDTO.getFromTime());
+
+				} else {
+					// endTime = s.getToTime();
+					s.setStartTime(endTime);
+
+				}
+				BigDecimal bd = new BigDecimal(s.getStartTime() + (sessionDTO.getInterval())).setScale(2,
+						RoundingMode.HALF_UP);
+
+				s.setEndTime(bd.doubleValue());
+				s.setDate(sessionDTO.getDate());
+				s.setId(i + 1L);
+				s.setTokenNumber(i + 1);
+				// add doctorid
+               
+				slotsDump.add(s);
+
+				startTime = s.getStartTime();
+				endTime = s.getEndTime();
+			}
+
+		}
+		List<ReservedSlotDTO> unreservedSlots = new ArrayList<ReservedSlotDTO>();
+		for (ReservedSlotDTO dto1 : slotsDump) {
+			if (!reservedSlots.isEmpty()) {
+				System.out.println("1111111111111111111111111111111"+reservedSlots);
+				for (ReservedSlotDTO dto2 : reservedSlots) {
+					if (!dto1.equals(dto2)) {
+						System.out.println("33333333333333333333333333333333333");
+						unreservedSlots.add(dto1);
+					}
+
+				}
+			} else {
+				System.out.println("2222222222222222222222222222222");
+				unreservedSlots.add(dto1);
+			}
+		}
+
+		return unreservedSlots;
 	}
 	@GetMapping("/unReserved-slots")
 	public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable) {
