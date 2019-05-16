@@ -192,9 +192,9 @@ public class ReservedSlotResource {
 		reservedSlotService.findByDoctorId(doctorId);
 	}
 
-	@PostMapping("/slot/{date}/{doctorId}")
+	@PostMapping("/slot")
 
-	public List<ReservedSlotDTO> createSlot(@PathVariable LocalDate date, @PathVariable Long doctorId) {
+	public List<ReservedSlotDTO> createSlot(@RequestParam LocalDate date, @RequestParam Long doctorId) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(date);
 
