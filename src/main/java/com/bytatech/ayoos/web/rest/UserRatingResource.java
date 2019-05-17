@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -74,6 +76,7 @@ public class UserRatingResource {
 	        
 	        //......................................................................................
 	        UserRatingDTO result = userRatingService.save(userRatingDTO);
+	        
 	DoctorDTO doctorDTO=doctorService.findOne(userRatingDTO.getDoctorId()).get();
 			
 			if (userRatingDTO.getRating() != null) {
@@ -97,12 +100,14 @@ public class UserRatingResource {
 					
 				}
 				
-				Double totalRating=(5*fiveCount + 4*fourCount + 3*threeCount + 2*twoCount + 1*oneCount) /(fiveCount+fourCount+threeCount+twoCount+oneCount)+0D;
+				float rating=(5*fiveCount + 4*fourCount + 3*threeCount + 2*twoCount + 1*oneCount) /(fiveCount+fourCount+threeCount+twoCount+oneCount);
+				BigDecimal ratingDB=new BigDecimal(rating).setScale(2,
+						RoundingMode.HALF_UP);
 				if (doctorDTO.getId() == null) {
 					throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
 				}
-				System.out.println("                  >>>>>>>>"+totalRating);
-				doctorDTO.setTotalRating(totalRating);
+				System.out.println("                  >>>>>>>>"+ratingDB.doubleValue());
+				doctorDTO.setTotalRating(ratingDB.doubleValue());
 				doctorService.save(doctorDTO);
 			}
 	        

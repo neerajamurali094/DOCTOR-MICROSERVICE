@@ -186,10 +186,10 @@ public class ReservedSlotResource {
 		});
 		return ResponseEntity.ok().body(dtos);
 	}
-	
+
 	@GetMapping("reserved-slot/findBydoctorId/{doctorId}")
-	public void findReservedSlotByDoctorId(@PathVariable Long doctorId){
-		
+	public void findReservedSlotByDoctorId(@PathVariable Long doctorId) {
+
 		reservedSlotService.findByDoctorId(doctorId);
 	}
 
@@ -201,7 +201,7 @@ public class ReservedSlotResource {
 
 		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
 		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
-		
+
 		Double startTime = 0.0;
 		Double endTime = 0.0;
 
@@ -227,7 +227,7 @@ public class ReservedSlotResource {
 				s.setId(i + 1L);
 				s.setTokenNumber(i + 1);
 				// add doctorid
-               
+
 				slotsDump.add(s);
 
 				startTime = s.getStartTime();
@@ -238,7 +238,7 @@ public class ReservedSlotResource {
 		List<ReservedSlotDTO> unreservedSlots = new ArrayList<ReservedSlotDTO>();
 		for (ReservedSlotDTO dto1 : slotsDump) {
 			if (!reservedSlots.isEmpty()) {
-				System.out.println("1111111111111111111111111111111"+reservedSlots);
+				System.out.println("1111111111111111111111111111111" + reservedSlots);
 				for (ReservedSlotDTO dto2 : reservedSlots) {
 					if (!dto1.equals(dto2)) {
 						System.out.println("33333333333333333333333333333333333");
@@ -257,24 +257,25 @@ public class ReservedSlotResource {
 	}
 
 	@GetMapping("/test1/{date}/{doctorId}")
-	public void test1(@PathVariable LocalDate date,@PathVariable Long doctorId){
-		System.out.println("......................test................."+date+"............."+doctorId);
+	public void test1(@PathVariable LocalDate date, @PathVariable Long doctorId) {
+		System.out.println("......................test................." + date + "............." + doctorId);
 	}
+
 	@GetMapping("/test2/{date}/{doctorId}")
-	public List<ReservedSlotDTO> test2(@PathVariable String date,@PathVariable Long doctorId){
+	public List<ReservedSlotDTO> test2(@PathVariable String date, @PathVariable Long doctorId) {
 
 		List<SessionInfoDTO> sessionList = sessionInfoService.findByDate(LocalDate.parse(date));
 
 		List<ReservedSlotDTO> slotsDump = new ArrayList<ReservedSlotDTO>();
 		List<ReservedSlotDTO> reservedSlots = reservedSlotService.findByDoctorId(doctorId);
-		
+
 		Double startTime = 0.0;
 		Double endTime = 0.0;
 
 		for (SessionInfoDTO sessionDTO : sessionList) {
 
-			for (int i = 0; startTime <= sessionDTO.getToTime(); i++) {
-
+			for (int i = 0; startTime < sessionDTO.getToTime(); i++) {
+				log.debug(startTime + ">>>>>>>>>>>>>>>>>>>>CONDITION>>>>>>>>>>>>>>>>>>>>>>>>" + sessionDTO.getToTime());
 				ReservedSlotDTO s = new ReservedSlotDTO();
 
 				if (i == 0) {
@@ -285,33 +286,48 @@ public class ReservedSlotResource {
 					s.setStartTime(endTime);
 
 				}
-				BigDecimal startTimeBD=	 new BigDecimal(s.getStartTime() ).setScale(2,
-							RoundingMode.HALF_UP);
-				BigDecimal intervalBD= new BigDecimal(sessionDTO.getInterval()).setScale(2,
-							RoundingMode.HALF_UP);
-				 
-				BigDecimal bd = new BigDecimal(startTimeBD.doubleValue()+intervalBD.doubleValue()).setScale(2,
+				BigDecimal startTimeBD = new BigDecimal(s.getStartTime()).setScale(2, RoundingMode.HALF_UP);
+				BigDecimal intervalBD = new BigDecimal(sessionDTO.getInterval()).setScale(2, RoundingMode.HALF_UP);
+
+				BigDecimal bd = new BigDecimal(startTimeBD.doubleValue() + intervalBD.doubleValue()).setScale(2,
 						RoundingMode.HALF_UP);
 
-				
-				s.setEndTime(bd.doubleValue());
+				// point value exceed 60 handling
+				String bdString = bd.toString();
+				int indexOfDecimal = bdString.indexOf(".");
+				String integerPart = bdString.substring(0, indexOfDecimal);
+				String point = bdString.substring(indexOfDecimal);
+				log.debug(bdString + ">>>>>>>>>>>>>>>>>>>>>>>>>" + Double.parseDouble(point));
+				if (Double.parseDouble(point) >= .60) {
+					Double doubleValue = Double.parseDouble(integerPart);
+					doubleValue++;
+					log.debug(",,,,,,,," + doubleValue);
+					s.setEndTime(doubleValue);
+					log.debug("...............................if..................................." + s.getEndTime());
+
+				} else {
+					log.debug(".............................else.....................................");
+					s.setEndTime(bd.doubleValue());
+				}
 				s.setDate(sessionDTO.getDate());
 				s.setId(i + 1L);
 				s.setTokenNumber(i + 1);
 				s.setDoctorId(doctorId);
-				// add doctorid
-               
+
 				slotsDump.add(s);
 
-				startTime = s.getStartTime();
+				startTime = s.getEndTime();
 				endTime = s.getEndTime();
+
+				log.debug(startTime + ".................................................................." + endTime);
+
 			}
 
 		}
 		List<ReservedSlotDTO> unreservedSlots = new ArrayList<ReservedSlotDTO>();
 		for (ReservedSlotDTO dto1 : slotsDump) {
 			if (!reservedSlots.isEmpty()) {
-				System.out.println("1111111111111111111111111111111"+reservedSlots);
+				System.out.println("1111111111111111111111111111111" + reservedSlots);
 				for (ReservedSlotDTO dto2 : reservedSlots) {
 					if (!dto1.equals(dto2)) {
 						System.out.println("33333333333333333333333333333333333");
@@ -327,6 +343,7 @@ public class ReservedSlotResource {
 
 		return unreservedSlots;
 	}
+
 	@GetMapping("/unReserved-slots")
 	public List<ReservedSlotDTO> getAllUnReservedSlots(Pageable pageable) {
 		List<ReservedSlotDTO> slots = reservedSlotService.findAll(pageable).getContent();
