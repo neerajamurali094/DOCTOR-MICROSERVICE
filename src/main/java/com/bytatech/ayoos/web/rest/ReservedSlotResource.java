@@ -285,13 +285,20 @@ public class ReservedSlotResource {
 					s.setStartTime(endTime);
 
 				}
-				BigDecimal bd = new BigDecimal(s.getStartTime() + (sessionDTO.getInterval())).setScale(2,
+				BigDecimal startTimeBD=	 new BigDecimal(s.getStartTime() ).setScale(2,
+							RoundingMode.HALF_UP);
+				BigDecimal intervalBD= new BigDecimal(sessionDTO.getInterval()).setScale(2,
+							RoundingMode.HALF_UP);
+				 
+				BigDecimal bd = new BigDecimal(startTimeBD.doubleValue()+intervalBD.doubleValue()).setScale(2,
 						RoundingMode.HALF_UP);
 
+				
 				s.setEndTime(bd.doubleValue());
 				s.setDate(sessionDTO.getDate());
 				s.setId(i + 1L);
 				s.setTokenNumber(i + 1);
+				s.setDoctorId(doctorId);
 				// add doctorid
                
 				slotsDump.add(s);
