@@ -45,11 +45,11 @@ public class UserRatingResource {
 	@Autowired
 	private DoctorService doctorService;
 
-	private static Integer fiveCount=0;
-	private static Integer fourCount=0;
-	private static Integer threeCount=0;
-	private static Integer twoCount=0;
-	private static Integer oneCount=0;
+	private static Integer fiveCount = 0;
+	private static Integer fourCount = 0;
+	private static Integer threeCount = 0;
+	private static Integer twoCount = 0;
+	private static Integer oneCount = 0;
 
 	public UserRatingResource(UserRatingService userRatingService) {
 		this.userRatingService = userRatingService;
@@ -69,56 +69,60 @@ public class UserRatingResource {
 	@PostMapping("/user-ratings")
 	public ResponseEntity<UserRatingDTO> createUserRating(@RequestBody UserRatingDTO userRatingDTO)
 			throws URISyntaxException {
-		 log.debug("REST request to save UserRating : {}", userRatingDTO);
-	        if (userRatingDTO.getId() != null) {
-	            throw new BadRequestAlertException("A new userRating cannot already have an ID", ENTITY_NAME, "idexists");
-	        }
-	        
-	        //......................................................................................
-	        UserRatingDTO result = userRatingService.save(userRatingDTO);
-	        
-	DoctorDTO doctorDTO=doctorService.findOne(userRatingDTO.getDoctorId()).get();
+		// log.debug("REST request to save UserRating : {}", userRatingDTO);
+		if (userRatingDTO.getId() != null) {
+			throw new BadRequestAlertException("A new userRating cannot already have an ID", ENTITY_NAME, "idexists");
+		}
+
+		// ......................................................................................
+		UserRatingDTO result = userRatingService.save(userRatingDTO);
+
+		DoctorDTO doctorDTO = doctorService.findOne(userRatingDTO.getDoctorId()).get();
+
+		if (userRatingDTO.getRating() != null) {
 			
-			if (userRatingDTO.getRating() != null) {
-				if (userRatingDTO.getRating() == 5) {
-					
-					fiveCount++;
-					log.debug(">>>>>>>>>>>>>>>>>>>>>5>>>>>>>>>>>>>>>>>>>>>>>>>>"+fiveCount);
-				}
-				if(userRatingDTO.getRating() == 4){
-					fourCount++;
-					log.debug(">>>>>>>>>>>>>>>>>>>>>4>>>>>>>>>>>>>>>>>>>>>>>>>>"+fourCount);
-				}
-				if(userRatingDTO.getRating() == 3){
-					threeCount++;
-					log.debug(">>>>>>>>>>>>>>>>>>>>>3>>>>>>>>>>>>>>>>>>>>>>>>>>"+threeCount);
-				}
-				if(userRatingDTO.getRating() == 2){
-					twoCount++;
-					log.debug(">>>>>>>>>>>>>>>>>>>>>2>>>>>>>>>>>>>>>>>>>>>>>>>>"+twoCount);
-				if(userRatingDTO.getRating() == 1){
-					oneCount++;
-					log.debug(">>>>>>>>>>>>>>>>>>>>>3>>>>>>>>>>>>>>>>>>>>>>>>>>"+oneCount);
-				}
-				
-				float rating=(5*fiveCount + 4*fourCount + 3*threeCount + 2*twoCount + 1*oneCount) /(fiveCount+fourCount+threeCount+twoCount+oneCount);
-				BigDecimal ratingDB=new BigDecimal(rating).setScale(2,
-						RoundingMode.HALF_UP);
-				if (doctorDTO.getId() == null) {
-					throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
-				}
-				
-				doctorDTO.setTotalRating(ratingDB.doubleValue());
-			DoctorDTO dto=	doctorService.save(doctorDTO);
-				log.debug("                  >>>>>>>>"+ratingDB.doubleValue());
-				log.debug("**********************************"+dto);
+			if (userRatingDTO.getRating() == 5) {
+
+				fiveCount++;
+				log.debug(">>>>>>>>>>>>>>>5>>>>>>>>>>>>>>>>>>>" + fiveCount);
 			}
-	        
-	        
+			if (userRatingDTO.getRating() == 4) {
+				fourCount++;
+				log.debug(">>>>>>>>>>>>>>>>>4>>>>>>>>>>>>>>>>>>" + fourCount);
 			}
-	        return ResponseEntity.created(new URI("/api/user-ratings/" + result.getId()))
-	            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-	            .body(result);
+			if (userRatingDTO.getRating() == 3) {
+				threeCount++;
+				log.debug(">>>>>>>>>>>>>>>>3>>>>>>>>>>>>>" + threeCount);
+			}
+			if (userRatingDTO.getRating() == 2) {
+				twoCount++;
+				log.debug(">>>>>>>>>>>>>>2>>>>>>>>>>>>>>>>>" + twoCount);
+			}
+			if (userRatingDTO.getRating() == 1) {
+				oneCount++;
+				log.debug(">>>>>>>>>>>>>>1>>>>>>>>>>>>>>>>>" + oneCount);
+			}
+
+			double rating = (5.0 * fiveCount + 4.0 * fourCount + 3.0 * threeCount + 2.0 * twoCount + 1.0 * oneCount)
+					/ (fiveCount + fourCount + threeCount + twoCount + oneCount);
+
+			BigDecimal ratingDB = new BigDecimal(rating).setScale(3, RoundingMode.HALF_UP);
+
+			log.debug("                  >>>>>>>>" + ratingDB.doubleValue());
+
+			if (doctorDTO.getId() == null) {
+				throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+			}
+
+			doctorDTO.setTotalRating(ratingDB.doubleValue());
+
+			DoctorDTO dto = doctorService.save(doctorDTO);
+
+			log.debug("**********************************" + dto);
+		}
+
+		return ResponseEntity.created(new URI("/api/user-ratings/" + result.getId()))
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 
 	}
 
@@ -212,7 +216,7 @@ public class UserRatingResource {
 	}
 
 	@GetMapping("/user-ratings/findBydoctorId/{doctorId}")
-	public List<UserRatingDTO> getUserRatingBydoctorId(@PathVariable Long doctorId){
+	public List<UserRatingDTO> getUserRatingBydoctorId(@PathVariable Long doctorId) {
 		return userRatingService.findByDoctorId(doctorId);
 	}
 }
