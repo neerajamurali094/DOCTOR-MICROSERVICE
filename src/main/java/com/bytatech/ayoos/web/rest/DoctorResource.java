@@ -177,7 +177,7 @@ public class DoctorResource {
 		return ResponseUtil.wrapOrNotFound(doctorDTO);
 	}
 
-	@GetMapping("/doctors/{doctorId}")
+	@GetMapping("/doctor/{doctorId}")
 	public DoctorAggregateDTO getDoctorByDoctorId(@PathVariable String doctorId) {
 		log.debug("REST request to get Doctor : {}", doctorId);
 

@@ -81,23 +81,24 @@ public class UserRatingResource {
 			
 			if (userRatingDTO.getRating() != null) {
 				if (userRatingDTO.getRating() == 5) {
-					fiveCount++;
 					
+					fiveCount++;
+					log.debug(">>>>>>>>>>>>>>>>>>>>>5>>>>>>>>>>>>>>>>>>>>>>>>>>"+fiveCount);
 				}
 				if(userRatingDTO.getRating() == 4){
 					fourCount++;
-					
+					log.debug(">>>>>>>>>>>>>>>>>>>>>4>>>>>>>>>>>>>>>>>>>>>>>>>>"+fourCount);
 				}
 				if(userRatingDTO.getRating() == 3){
 					threeCount++;
-					
+					log.debug(">>>>>>>>>>>>>>>>>>>>>3>>>>>>>>>>>>>>>>>>>>>>>>>>"+threeCount);
 				}
 				if(userRatingDTO.getRating() == 2){
 					twoCount++;
-					
+					log.debug(">>>>>>>>>>>>>>>>>>>>>2>>>>>>>>>>>>>>>>>>>>>>>>>>"+twoCount);
 				if(userRatingDTO.getRating() == 1){
 					oneCount++;
-					
+					log.debug(">>>>>>>>>>>>>>>>>>>>>3>>>>>>>>>>>>>>>>>>>>>>>>>>"+oneCount);
 				}
 				
 				float rating=(5*fiveCount + 4*fourCount + 3*threeCount + 2*twoCount + 1*oneCount) /(fiveCount+fourCount+threeCount+twoCount+oneCount);
@@ -106,9 +107,11 @@ public class UserRatingResource {
 				if (doctorDTO.getId() == null) {
 					throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
 				}
-				System.out.println("                  >>>>>>>>"+ratingDB.doubleValue());
+				
 				doctorDTO.setTotalRating(ratingDB.doubleValue());
-				doctorService.save(doctorDTO);
+			DoctorDTO dto=	doctorService.save(doctorDTO);
+				log.debug("                  >>>>>>>>"+ratingDB.doubleValue());
+				log.debug("**********************************"+dto);
 			}
 	        
 	        
