@@ -1,109 +1,77 @@
 entity Doctor {
 	image ImageBlob,
-    doctorId String,
-    specialization String,
-    registerNumber String,
-    practiceSince ZonedDateTime,
-    totalRating Double,
-    firstName String,
-    email String,
-    phoneNumber Long
+	doctorId String,
+	specialization String,
+	registerNumber String,
+	practiceSince ZonedDateTime,
+	totalRating Double,
+	firstName String,
+	email String,
+	phoneNumber Long
 }
-
 entity ContactInfo{
- 
 	facebookURL String,
 	twitterURL String
 }
-
 entity WorkPlace{
-
- name String,
- locationName String,
- location String
-
+	name String,
+	locationName String,
+	location String
 }
-
 entity Qualification{
-
-qualification String
-
+	qualification String
 }
-
 entity UserRating{
-userName String,
-rating Double,
-ratedOn ZonedDateTime
+	userName String,
+	rating Double,
+	ratedOn ZonedDateTime
 }
-
 entity Review{
-review String
+	userName String,
+	review String,
+	reviewedOn LocalDate
 }
 entity Reply{
-reply String
+	reply String
 }
-
 entity SessionInfo{
-sessionName String,
-date LocalDate,
-weekDay Integer,
-fromTime Double min(0),
-toTime Double max(23),
-interval Double
+	sessionName String,
+	date LocalDate,
+	weekDay Integer,
+	fromTime Double min(0),
+	toTime Double max(23),
+	interval Double
 }
-
 entity ReservedSlot{
 	date LocalDate,
- 	startTime Double,
+	startTime Double,
 	endTime Double,
 	tokenNumber Integer
 }
-
 entity PaymentSettings{
-  isPaymentEnabled Boolean ,
-  amount  Double,
-  paymentMethod String,
-  currency String,
-  intent String,
-  noteToPayer String,
-  paymentGatewayProvider String,
-  paymentGatewayCredentials String
+	isPaymentEnabled Boolean,
+	amount Double,
+	paymentMethod String,
+	currency String,
+	intent String,
+	noteToPayer String,
+	paymentGatewayProvider String,
+	paymentGatewayCredentials String
 }
-
 entity DoctorSettings{
-  approvalType String,
-  isMailNotificationsEnabled Boolean,
-  isSMSNotificationsEnabled Boolean
+	approvalType String,
+	isMailNotificationsEnabled Boolean,
+	isSMSNotificationsEnabled Boolean
 }
-
 relationship OneToOne{
-Doctor{contactInfo} to ContactInfo,
-Doctor{paymentSettings} to PaymentSettings,
-Doctor{doctorSettings} to DoctorSettings
-
-
+	Doctor{contactInfo} to ContactInfo , Doctor{paymentSettings} to PaymentSettings , Doctor{doctorSettings} to DoctorSettings
 }
 entity Status{
 	status String
 }
 relationship OneToMany{
-
-Doctor{workPlace} to WorkPlace,
-WorkPlace{sessionInfo} to SessionInfo,
-Doctor{qualification} to Qualification,
-Review{reply} to Reply,
-Doctor{review} to Review,
-Doctor{userRating} to UserRating,
-Doctor{reservedSlot} to ReservedSlot,
-ReservedSlot{status} to Status
-
-
+	Doctor{workPlace} to WorkPlace , WorkPlace{sessionInfo} to SessionInfo , Doctor{qualification} to Qualification , Review{reply} to Reply , Doctor{review} to Review , Doctor{userRating} to UserRating , Doctor{reservedSlot} to ReservedSlot , ReservedSlot{status} to Status
 }
-
-
 dto * with mapstruct
-
 paginate * with pagination
-
-
 service all with serviceImpl

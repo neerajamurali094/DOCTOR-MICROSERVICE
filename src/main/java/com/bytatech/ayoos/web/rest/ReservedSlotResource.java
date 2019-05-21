@@ -378,7 +378,7 @@ public class ReservedSlotResource {
 		Long dateLong;
 		Integer tokenNumber;
 		
-	LocalDate date=	Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30))));
+/*	LocalDate date=	Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30))));*/
 		
 		
 		
