@@ -29,7 +29,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -367,4 +369,18 @@ public class ReservedSlotResource {
 	 * getStatus(@PathVariable Long reserveredSlotId){ return
 	 * statusService.findByReservedSlotId(reserveredSlotId); }
 	 */
+	
+	@PostMapping("/createReserved-kafka")
+	public void createReservedSlot(){
+		
+		Long startTime;
+		Long endTime;
+		Long dateLong;
+		Integer tokenNumber;
+		
+	LocalDate date=	Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30))));
+		
+		
+		
+	}
 }

@@ -4,8 +4,10 @@ import com.bytatech.ayoos.service.UserRatingService;
 import com.bytatech.ayoos.domain.UserRating;
 import com.bytatech.ayoos.repository.UserRatingRepository;
 import com.bytatech.ayoos.repository.search.UserRatingSearchRepository;
+import com.bytatech.ayoos.security.SecurityUtils;
 import com.bytatech.ayoos.service.dto.UserRatingDTO;
 import com.bytatech.ayoos.service.mapper.UserRatingMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +53,9 @@ public class UserRatingServiceImpl implements UserRatingService {
     public UserRatingDTO save(UserRatingDTO userRatingDTO) {
         log.debug("Request to save UserRating : {}", userRatingDTO);
         UserRating userRating = userRatingMapper.toEntity(userRatingDTO);
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        userRating.setUserName(currentUserLogin.get());
+        userRating.setRatedOn(ZonedDateTime.now());
         userRating = userRatingRepository.save(userRating);
         UserRatingDTO result = userRatingMapper.toDto(userRating);
         userRatingSearchRepository.save(userRating);
