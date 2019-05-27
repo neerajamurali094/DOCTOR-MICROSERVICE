@@ -1,5 +1,5 @@
 package com.bytatech.ayoos.service.dto;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class UserRatingDTO implements Serializable {
 
     private Double rating;
 
-    private ZonedDateTime ratedOn;
+    private LocalDate ratedOn;
 
 
     private Long doctorId;
@@ -43,11 +43,11 @@ public class UserRatingDTO implements Serializable {
         this.rating = rating;
     }
 
-    public ZonedDateTime getRatedOn() {
+    public LocalDate getRatedOn() {
         return ratedOn;
     }
 
-    public void setRatedOn(ZonedDateTime ratedOn) {
+    public void setRatedOn(LocalDate ratedOn) {
         this.ratedOn = ratedOn;
     }
 

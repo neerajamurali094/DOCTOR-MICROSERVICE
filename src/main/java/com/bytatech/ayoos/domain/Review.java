@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -26,8 +27,14 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name = "review")
     private String review;
+
+    @Column(name = "reviewed_on")
+    private LocalDate reviewedOn;
 
     @ManyToOne
     @JsonIgnoreProperties("reviews")
@@ -44,6 +51,19 @@ public class Review implements Serializable {
         this.id = id;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public Review userName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getReview() {
         return review;
     }
@@ -55,6 +75,19 @@ public class Review implements Serializable {
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    public LocalDate getReviewedOn() {
+        return reviewedOn;
+    }
+
+    public Review reviewedOn(LocalDate reviewedOn) {
+        this.reviewedOn = reviewedOn;
+        return this;
+    }
+
+    public void setReviewedOn(LocalDate reviewedOn) {
+        this.reviewedOn = reviewedOn;
     }
 
     public Doctor getDoctor() {
@@ -120,7 +153,9 @@ public class Review implements Serializable {
     public String toString() {
         return "Review{" +
             "id=" + getId() +
+            ", userName='" + getUserName() + "'" +
             ", review='" + getReview() + "'" +
+            ", reviewedOn='" + getReviewedOn() + "'" +
             "}";
     }
 }

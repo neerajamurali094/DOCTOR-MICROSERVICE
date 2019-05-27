@@ -1,5 +1,6 @@
 package com.bytatech.ayoos.web.rest;
 
+import com.bytatech.ayoos.domain.UserRating;
 import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.UserRatingService;
 import com.bytatech.ayoos.web.rest.errors.BadRequestAlertException;
@@ -7,6 +8,8 @@ import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.UserRatingDTO;
+import com.bytatech.ayoos.service.mapper.UserRatingMapper;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +47,9 @@ public class UserRatingResource {
 
 	@Autowired
 	private DoctorService doctorService;
+	
+	@Autowired
+	UserRatingMapper userRatingMapper;
 
 	private static Integer fiveCount = 0;
 	private static Integer fourCount = 0;
@@ -218,5 +224,11 @@ public class UserRatingResource {
 	@GetMapping("/user-ratings/findBydoctorId/{doctorId}")
 	public List<UserRatingDTO> getUserRatingBydoctorId(@PathVariable Long doctorId) {
 		return userRatingService.findByDoctorId(doctorId);
+	}
+	
+	@PostMapping("/user-rating/modelToDto")
+	public ResponseEntity<UserRatingDTO> modelToDto(@RequestBody UserRating userRating) {
+		log.debug("REST request to convert to DTO");
+		return ResponseEntity.ok().body(userRatingMapper.toDto(userRating));
 	}
 }

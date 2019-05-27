@@ -41,7 +41,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="practice_since" type="datetime">
+            <column name="practice_since" type="date">
                 <constraints nullable="true" />
             </column>
 
@@ -69,7 +69,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="doctor" columnName="practice_since" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

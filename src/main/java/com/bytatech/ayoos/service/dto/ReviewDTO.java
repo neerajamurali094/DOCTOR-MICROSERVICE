@@ -1,4 +1,5 @@
 package com.bytatech.ayoos.service.dto;
+import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,7 +10,11 @@ public class ReviewDTO implements Serializable {
 
     private Long id;
 
+    private String userName;
+
     private String review;
+
+    private LocalDate reviewedOn;
 
 
     private Long doctorId;
@@ -22,12 +27,28 @@ public class ReviewDTO implements Serializable {
         this.id = id;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getReview() {
         return review;
     }
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    public LocalDate getReviewedOn() {
+        return reviewedOn;
+    }
+
+    public void setReviewedOn(LocalDate reviewedOn) {
+        this.reviewedOn = reviewedOn;
     }
 
     public Long getDoctorId() {
@@ -63,7 +84,9 @@ public class ReviewDTO implements Serializable {
     public String toString() {
         return "ReviewDTO{" +
             "id=" + getId() +
+            ", userName='" + getUserName() + "'" +
             ", review='" + getReview() + "'" +
+            ", reviewedOn='" + getReviewedOn() + "'" +
             ", doctor=" + getDoctorId() +
             "}";
     }

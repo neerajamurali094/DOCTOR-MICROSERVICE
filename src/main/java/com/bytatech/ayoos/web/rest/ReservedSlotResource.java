@@ -31,7 +31,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -370,17 +373,23 @@ public class ReservedSlotResource {
 	 * statusService.findByReservedSlotId(reserveredSlotId); }
 	 */
 	
-	@PostMapping("/createReserved-kafka")
+	@PostMapping("/createReservedSlot-kafka")
 	public void createReservedSlot(){
-		
-		Long startTime;
+		//kafka configuration 
+		//consume/listen to data save it
+		Long startTime =  1499070300L; ;
 		Long endTime;
 		Long dateLong;
 		Integer tokenNumber;
 		
-/*	LocalDate date=	Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30))));*/
-		
-		
-		
+	LocalDate date=	Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30)).toLocalDate();
+	
+	LocalTime time=Instant.ofEpochMilli(startTime).atZone(ZoneOffset.ofHoursMinutes(5, 30)).toLocalTime().truncatedTo(ChronoUnit.MINUTES);
+	String t=time+"";
+	Double d=Double.parseDouble(t.replace(":","."));
+	
+	
+	
+	
 	}
 }

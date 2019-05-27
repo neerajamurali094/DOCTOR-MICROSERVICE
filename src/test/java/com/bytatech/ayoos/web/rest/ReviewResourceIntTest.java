@@ -28,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,8 +51,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DoctorApp.class)
 public class ReviewResourceIntTest {
 
+    private static final String DEFAULT_USER_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_USER_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_REVIEW = "AAAAAAAAAA";
     private static final String UPDATED_REVIEW = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_REVIEWED_ON = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_REVIEWED_ON = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -108,7 +116,9 @@ public class ReviewResourceIntTest {
      */
     public static Review createEntity(EntityManager em) {
         Review review = new Review()
-            .review(DEFAULT_REVIEW);
+            .userName(DEFAULT_USER_NAME)
+            .review(DEFAULT_REVIEW)
+            .reviewedOn(DEFAULT_REVIEWED_ON);
         return review;
     }
 
@@ -133,7 +143,9 @@ public class ReviewResourceIntTest {
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(databaseSizeBeforeCreate + 1);
         Review testReview = reviewList.get(reviewList.size() - 1);
+        assertThat(testReview.getUserName()).isEqualTo(DEFAULT_USER_NAME);
         assertThat(testReview.getReview()).isEqualTo(DEFAULT_REVIEW);
+        assertThat(testReview.getReviewedOn()).isEqualTo(DEFAULT_REVIEWED_ON);
 
         // Validate the Review in Elasticsearch
         verify(mockReviewSearchRepository, times(1)).save(testReview);
@@ -173,7 +185,9 @@ public class ReviewResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(review.getId().intValue())))
-            .andExpect(jsonPath("$.[*].review").value(hasItem(DEFAULT_REVIEW.toString())));
+            .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME.toString())))
+            .andExpect(jsonPath("$.[*].review").value(hasItem(DEFAULT_REVIEW.toString())))
+            .andExpect(jsonPath("$.[*].reviewedOn").value(hasItem(DEFAULT_REVIEWED_ON.toString())));
     }
     
     @Test
@@ -187,7 +201,9 @@ public class ReviewResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(review.getId().intValue()))
-            .andExpect(jsonPath("$.review").value(DEFAULT_REVIEW.toString()));
+            .andExpect(jsonPath("$.userName").value(DEFAULT_USER_NAME.toString()))
+            .andExpect(jsonPath("$.review").value(DEFAULT_REVIEW.toString()))
+            .andExpect(jsonPath("$.reviewedOn").value(DEFAULT_REVIEWED_ON.toString()));
     }
 
     @Test
@@ -211,7 +227,9 @@ public class ReviewResourceIntTest {
         // Disconnect from session so that the updates on updatedReview are not directly saved in db
         em.detach(updatedReview);
         updatedReview
-            .review(UPDATED_REVIEW);
+            .userName(UPDATED_USER_NAME)
+            .review(UPDATED_REVIEW)
+            .reviewedOn(UPDATED_REVIEWED_ON);
         ReviewDTO reviewDTO = reviewMapper.toDto(updatedReview);
 
         restReviewMockMvc.perform(put("/api/reviews")
@@ -223,7 +241,9 @@ public class ReviewResourceIntTest {
         List<Review> reviewList = reviewRepository.findAll();
         assertThat(reviewList).hasSize(databaseSizeBeforeUpdate);
         Review testReview = reviewList.get(reviewList.size() - 1);
+        assertThat(testReview.getUserName()).isEqualTo(UPDATED_USER_NAME);
         assertThat(testReview.getReview()).isEqualTo(UPDATED_REVIEW);
+        assertThat(testReview.getReviewedOn()).isEqualTo(UPDATED_REVIEWED_ON);
 
         // Validate the Review in Elasticsearch
         verify(mockReviewSearchRepository, times(1)).save(testReview);
@@ -284,7 +304,9 @@ public class ReviewResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(review.getId().intValue())))
-            .andExpect(jsonPath("$.[*].review").value(hasItem(DEFAULT_REVIEW)));
+            .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME)))
+            .andExpect(jsonPath("$.[*].review").value(hasItem(DEFAULT_REVIEW)))
+            .andExpect(jsonPath("$.[*].reviewedOn").value(hasItem(DEFAULT_REVIEWED_ON.toString())));
     }
 
     @Test

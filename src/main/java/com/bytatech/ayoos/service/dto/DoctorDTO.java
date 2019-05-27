@@ -1,5 +1,5 @@
 package com.bytatech.ayoos.service.dto;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
@@ -21,7 +21,7 @@ public class DoctorDTO implements Serializable {
 
     private String registerNumber;
 
-    private ZonedDateTime practiceSince;
+    private LocalDate practiceSince;
 
     private Double totalRating;
 
@@ -86,11 +86,11 @@ public class DoctorDTO implements Serializable {
         this.registerNumber = registerNumber;
     }
 
-    public ZonedDateTime getPracticeSince() {
+    public LocalDate getPracticeSince() {
         return practiceSince;
     }
 
-    public void setPracticeSince(ZonedDateTime practiceSince) {
+    public void setPracticeSince(LocalDate practiceSince) {
         this.practiceSince = practiceSince;
     }
 

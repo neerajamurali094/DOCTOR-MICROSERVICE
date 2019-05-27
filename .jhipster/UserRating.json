@@ -11,7 +11,7 @@
         },
         {
             "fieldName": "ratedOn",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "LocalDate"
         }
     ],
     "relationships": [

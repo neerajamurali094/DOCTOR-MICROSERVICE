@@ -6,6 +6,7 @@ import com.bytatech.ayoos.service.dto.UserRatingDTO;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,4 +23,6 @@ public interface UserRatingRepository extends JpaRepository<UserRating, Long> {
 	 */
 	List<UserRating> findByDoctorId(Long doctorId);
 
+	@Query("SELECT COUNT(u) FROM UserRating u WHERE u.rating=:rating")
+	public int getCount(@Param("rating")Double rating);
 }

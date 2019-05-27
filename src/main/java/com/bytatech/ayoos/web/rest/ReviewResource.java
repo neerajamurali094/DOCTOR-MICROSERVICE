@@ -161,4 +161,11 @@ public class ReviewResource {
     public List<ReviewDTO> getReviewByDoctorId(@PathVariable Long doctorId){
     return	reviewService.findByDoctorId(doctorId);
     }
+    
+    @PostMapping("/review/modelToDto")
+   	public ResponseEntity<ReviewDTO> modelToDto(@RequestBody Review Review) {
+   		log.debug("REST request to convert to DTO");
+   	
+   		return ResponseEntity.ok().body(reviewMapper.toDto(Review));
+   	}
 }

@@ -22,7 +22,15 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="user_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="review" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reviewed_on" type="date">
                 <constraints nullable="true" />
             </column>
 

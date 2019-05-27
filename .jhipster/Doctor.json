@@ -20,7 +20,7 @@
         },
         {
             "fieldName": "practiceSince",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "LocalDate"
         },
         {
             "fieldName": "totalRating",

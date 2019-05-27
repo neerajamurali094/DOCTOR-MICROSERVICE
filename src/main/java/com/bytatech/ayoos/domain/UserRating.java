@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -31,7 +31,7 @@ public class UserRating implements Serializable {
     private Double rating;
 
     @Column(name = "rated_on")
-    private ZonedDateTime ratedOn;
+    private LocalDate ratedOn;
 
     @ManyToOne
     @JsonIgnoreProperties("userRatings")
@@ -72,16 +72,16 @@ public class UserRating implements Serializable {
         this.rating = rating;
     }
 
-    public ZonedDateTime getRatedOn() {
+    public LocalDate getRatedOn() {
         return ratedOn;
     }
 
-    public UserRating ratedOn(ZonedDateTime ratedOn) {
+    public UserRating ratedOn(LocalDate ratedOn) {
         this.ratedOn = ratedOn;
         return this;
     }
 
-    public void setRatedOn(ZonedDateTime ratedOn) {
+    public void setRatedOn(LocalDate ratedOn) {
         this.ratedOn = ratedOn;
     }
 

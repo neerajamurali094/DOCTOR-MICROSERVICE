@@ -30,7 +30,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -69,8 +69,8 @@ public class DoctorResourceIntTest {
     private static final String DEFAULT_REGISTER_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_REGISTER_NUMBER = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_PRACTICE_SINCE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_PRACTICE_SINCE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_PRACTICE_SINCE = LocalDate.now();
+    private static final LocalDate UPDATED_PRACTICE_SINCE = LocalDate.now(ZoneId.systemDefault());
 
     private static final Double DEFAULT_TOTAL_RATING = 1D;
     private static final Double UPDATED_TOTAL_RATING = 2D;
@@ -228,7 +228,7 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.[*].doctorId").value(hasItem(DEFAULT_DOCTOR_ID.toString())))
             .andExpect(jsonPath("$.[*].specialization").value(hasItem(DEFAULT_SPECIALIZATION.toString())))
             .andExpect(jsonPath("$.[*].registerNumber").value(hasItem(DEFAULT_REGISTER_NUMBER.toString())))
-            .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(sameInstant(DEFAULT_PRACTICE_SINCE))))
+            .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(DEFAULT_PRACTICE_SINCE)))
             .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
@@ -251,7 +251,7 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.doctorId").value(DEFAULT_DOCTOR_ID.toString()))
             .andExpect(jsonPath("$.specialization").value(DEFAULT_SPECIALIZATION.toString()))
             .andExpect(jsonPath("$.registerNumber").value(DEFAULT_REGISTER_NUMBER.toString()))
-            .andExpect(jsonPath("$.practiceSince").value(sameInstant(DEFAULT_PRACTICE_SINCE)))
+            .andExpect(jsonPath("$.practiceSince").value(DEFAULT_PRACTICE_SINCE))
             .andExpect(jsonPath("$.totalRating").value(DEFAULT_TOTAL_RATING.doubleValue()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
@@ -375,7 +375,7 @@ public class DoctorResourceIntTest {
             .andExpect(jsonPath("$.[*].doctorId").value(hasItem(DEFAULT_DOCTOR_ID)))
             .andExpect(jsonPath("$.[*].specialization").value(hasItem(DEFAULT_SPECIALIZATION)))
             .andExpect(jsonPath("$.[*].registerNumber").value(hasItem(DEFAULT_REGISTER_NUMBER)))
-            .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(sameInstant(DEFAULT_PRACTICE_SINCE))))
+            .andExpect(jsonPath("$.[*].practiceSince").value(hasItem(DEFAULT_PRACTICE_SINCE)))
             .andExpect(jsonPath("$.[*].totalRating").value(hasItem(DEFAULT_TOTAL_RATING.doubleValue())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))

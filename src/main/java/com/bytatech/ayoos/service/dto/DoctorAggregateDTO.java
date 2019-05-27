@@ -15,6 +15,7 @@
  */
 package com.bytatech.ayoos.service.dto;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +66,7 @@ public class DoctorAggregateDTO {
 	    private String registerNumber;
 
 
-	    private ZonedDateTime practiceSince;
+	    private LocalDate practiceSince;
 
 	  
 	    private Double totalRating;
@@ -142,11 +143,11 @@ public class DoctorAggregateDTO {
 			this.registerNumber = registerNumber;
 		}
 
-		public ZonedDateTime getPracticeSince() {
+		public LocalDate getPracticeSince() {
 			return practiceSince;
 		}
 
-		public void setPracticeSince(ZonedDateTime practiceSince) {
+		public void setPracticeSince(LocalDate practiceSince) {
 			this.practiceSince = practiceSince;
 		}
 

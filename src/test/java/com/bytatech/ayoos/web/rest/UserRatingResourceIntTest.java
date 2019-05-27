@@ -29,7 +29,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.Collections;
@@ -60,8 +60,8 @@ public class UserRatingResourceIntTest {
     private static final Double DEFAULT_RATING = 1D;
     private static final Double UPDATED_RATING = 2D;
 
-    private static final ZonedDateTime DEFAULT_RATED_ON = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_RATED_ON = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDate DEFAULT_RATED_ON = LocalDate.now();
+    private static final LocalDate UPDATED_RATED_ON = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private UserRatingRepository userRatingRepository;
@@ -190,7 +190,7 @@ public class UserRatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(userRating.getId().intValue())))
             .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME.toString())))
             .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())))
-            .andExpect(jsonPath("$.[*].ratedOn").value(hasItem(sameInstant(DEFAULT_RATED_ON))));
+            .andExpect(jsonPath("$.[*].ratedOn").value(hasItem(DEFAULT_RATED_ON)));
     }
     
     @Test
@@ -206,7 +206,7 @@ public class UserRatingResourceIntTest {
             .andExpect(jsonPath("$.id").value(userRating.getId().intValue()))
             .andExpect(jsonPath("$.userName").value(DEFAULT_USER_NAME.toString()))
             .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.doubleValue()))
-            .andExpect(jsonPath("$.ratedOn").value(sameInstant(DEFAULT_RATED_ON)));
+            .andExpect(jsonPath("$.ratedOn").value(DEFAULT_RATED_ON));
     }
 
     @Test
@@ -309,7 +309,7 @@ public class UserRatingResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(userRating.getId().intValue())))
             .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME)))
             .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())))
-            .andExpect(jsonPath("$.[*].ratedOn").value(hasItem(sameInstant(DEFAULT_RATED_ON))));
+            .andExpect(jsonPath("$.[*].ratedOn").value(hasItem(DEFAULT_RATED_ON)));
     }
 
     @Test

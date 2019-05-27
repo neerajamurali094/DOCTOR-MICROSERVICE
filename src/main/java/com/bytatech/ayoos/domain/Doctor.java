@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -43,9 +43,10 @@ public class Doctor implements Serializable {
     private String registerNumber;
 
     @Column(name = "practice_since")
-    private ZonedDateTime practiceSince;
+    private LocalDate practiceSince;
 
     @Column(name = "total_rating")
+    
     private Double totalRating;
 
     @Column(name = "first_name")
@@ -153,16 +154,16 @@ public class Doctor implements Serializable {
         this.registerNumber = registerNumber;
     }
 
-    public ZonedDateTime getPracticeSince() {
+    public LocalDate getPracticeSince() {
         return practiceSince;
     }
 
-    public Doctor practiceSince(ZonedDateTime practiceSince) {
+    public Doctor practiceSince(LocalDate practiceSince) {
         this.practiceSince = practiceSince;
         return this;
     }
 
-    public void setPracticeSince(ZonedDateTime practiceSince) {
+    public void setPracticeSince(LocalDate practiceSince) {
         this.practiceSince = practiceSince;
     }
 

@@ -3,7 +3,7 @@ entity Doctor {
 	doctorId String,
 	specialization String,
 	registerNumber String,
-	practiceSince ZonedDateTime,
+	practiceSince LocalDate,
 	totalRating Double,
 	firstName String,
 	email String,
@@ -24,7 +24,7 @@ entity Qualification{
 entity UserRating{
 	userName String,
 	rating Double,
-	ratedOn ZonedDateTime
+	ratedOn LocalDate
 }
 entity Review{
 	userName String,

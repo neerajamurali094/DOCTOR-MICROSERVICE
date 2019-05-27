@@ -4,6 +4,7 @@ import com.bytatech.ayoos.service.ReviewService;
 import com.bytatech.ayoos.domain.Review;
 import com.bytatech.ayoos.repository.ReviewRepository;
 import com.bytatech.ayoos.repository.search.ReviewSearchRepository;
+import com.bytatech.ayoos.security.SecurityUtils;
 import com.bytatech.ayoos.service.dto.ReviewDTO;
 import com.bytatech.ayoos.service.mapper.ReviewMapper;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +52,9 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDTO save(ReviewDTO reviewDTO) {
         log.debug("Request to save Review : {}", reviewDTO);
         Review review = reviewMapper.toEntity(reviewDTO);
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        review.setUserName(currentUserLogin.get());
+        review.setReviewedOn(LocalDate.now());
         review = reviewRepository.save(review);
         ReviewDTO result = reviewMapper.toDto(review);
         reviewSearchRepository.save(review);
