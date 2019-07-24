@@ -209,13 +209,14 @@ public class SessionInfoResource {
 		c.setTime(currentdate);// we can give different date as our prefference
 		List<SessionInfoDTO> sessionDTO = new ArrayList<SessionInfoDTO>();
 		for (Integer monthReff : monthList) {
-
+			log.info(".................monthList..................."+monthList);
+			log.info("..........monthReff in........"+monthReff+".........c.get(Calendar.MONTH)......."+c.get(Calendar.MONTH));
 			for (int i = 0; monthReff == (c.get(Calendar.MONTH)); i++) {
 
 				int weekRef = c.get(Calendar.DAY_OF_WEEK);
 
 				for (SessionInfoDTO sDTO : sessionList) {
-
+log.info("..........weekRef............"+weekRef+".......sDTO.getWeekDay()........"+sDTO.getWeekDay());
 					if (weekRef == sDTO.getWeekDay()) {
 						SessionInfo s = new SessionInfo();
 						s.setSessionName(sDTO.getSessionName());

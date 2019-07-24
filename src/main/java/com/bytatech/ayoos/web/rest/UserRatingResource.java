@@ -81,7 +81,7 @@ public class UserRatingResource {
         }
         UserRatingDTO result1 = userRatingService.save(userRatingDTO);
         if (result1.getId() == null) {
-            throw new BadRequestAlertException("A new userRating cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         UserRatingDTO result = userRatingService.save(result1);
 		return ResponseEntity.created(new URI("/api/user-ratings/" + result.getId()))
