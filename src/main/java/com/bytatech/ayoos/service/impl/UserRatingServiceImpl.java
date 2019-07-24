@@ -109,7 +109,7 @@ public class UserRatingServiceImpl implements UserRatingService {
 
 		DoctorDTO dto = doctorService.save(doctorDTO);
 
-		log.debug("**************store: ********************" + dto);
+		log.debug("**************doctor: ********************" + dto);
         
         return result;
     }
