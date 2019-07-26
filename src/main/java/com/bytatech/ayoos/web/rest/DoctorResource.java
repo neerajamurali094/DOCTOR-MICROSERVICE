@@ -1,6 +1,8 @@
 package com.bytatech.ayoos.web.rest;
 
 import com.bytatech.ayoos.domain.Doctor;
+import com.bytatech.ayoos.domain.DoctorSettings;
+import com.bytatech.ayoos.repository.DoctorSettingsRepository;
 import com.bytatech.ayoos.service.ContactInfoService;
 import com.bytatech.ayoos.service.DoctorService;
 import com.bytatech.ayoos.service.DoctorSettingsService;
@@ -15,6 +17,7 @@ import com.bytatech.ayoos.web.rest.util.HeaderUtil;
 import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorAggregateDTO;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
+import com.bytatech.ayoos.service.dto.DoctorSettingsDTO;
 import com.bytatech.ayoos.service.mapper.DoctorMapper;
 import com.bytatech.ayoos.service.mapper.DoctorSettingsMapper;
 import com.bytatech.ayoos.service.mapper.PaymentSettingsMapper;
@@ -69,6 +72,7 @@ public class DoctorResource {
 	ContactInfoMapper ContactInfoMapper;
 	@Autowired
 	DoctorSettingsService doctorSettingsService;
+	
 	@Autowired
 	DoctorSettingsMapper doctorSettingsMapper;
 	@Autowired
@@ -91,6 +95,8 @@ public class DoctorResource {
 	PaymentSettingsService paymentSettingsService;
 	@Autowired
 	private PaymentSettingsMapper paymentSettingsMapper;
+	
+
 
 	public DoctorResource(DoctorService doctorService) {
 		this.doctorService = doctorService;
@@ -109,7 +115,21 @@ public class DoctorResource {
 	 */
 	@PostMapping("/doctors")
 	public ResponseEntity<DoctorDTO> createDoctor(@RequestBody DoctorDTO doctorDTO) throws URISyntaxException {
+		
 		log.debug("REST request to save Doctor : {}", doctorDTO);
+		//..................default settings...........................
+		DoctorSettingsDTO doctorSettings=new DoctorSettingsDTO();
+		
+		doctorSettings.setApprovalType("automatic");
+		
+		doctorSettings.setIsMailNotificationsEnabled(true);
+		
+		doctorSettings.setIsSMSNotificationsEnabled(true);
+		
+		DoctorSettingsDTO dto=doctorSettingsService.save(doctorSettings);
+		
+		doctorDTO.setDoctorSettingsId(dto.getId());
+		
 		if (doctorDTO.getId() != null) {
 			throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
 		}
@@ -119,6 +139,7 @@ public class DoctorResource {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
 		DoctorDTO result = doctorService.save(resultDTO);
+		
 		return ResponseEntity.created(new URI("/api/doctors/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
