@@ -18,6 +18,7 @@ import com.bytatech.ayoos.web.rest.util.PaginationUtil;
 import com.bytatech.ayoos.service.dto.DoctorAggregateDTO;
 import com.bytatech.ayoos.service.dto.DoctorDTO;
 import com.bytatech.ayoos.service.dto.DoctorSettingsDTO;
+import com.bytatech.ayoos.service.dto.PaymentSettingsDTO;
 import com.bytatech.ayoos.service.mapper.DoctorMapper;
 import com.bytatech.ayoos.service.mapper.DoctorSettingsMapper;
 import com.bytatech.ayoos.service.mapper.PaymentSettingsMapper;
@@ -117,6 +118,7 @@ public class DoctorResource {
 	public ResponseEntity<DoctorDTO> createDoctor(@RequestBody DoctorDTO doctorDTO) throws URISyntaxException {
 		
 		log.debug("REST request to save Doctor : {}", doctorDTO);
+		
 		//..................default settings...........................
 		DoctorSettingsDTO doctorSettings=new DoctorSettingsDTO();
 		
@@ -128,7 +130,23 @@ public class DoctorResource {
 		
 		DoctorSettingsDTO dto=doctorSettingsService.save(doctorSettings);
 		
+		//..................default paymentsettings...........................
+		
+		PaymentSettingsDTO payment=new PaymentSettingsDTO();
+		
+		payment.setAmount(100.0);
+		
+		payment.setIsPaymentEnabled(false);
+		
+		payment.setCurrency("INR");
+		
+		PaymentSettingsDTO paymentSettings = paymentSettingsService.save(payment);
+		
+
 		doctorDTO.setDoctorSettingsId(dto.getId());
+		
+		doctorDTO.setPaymentSettingsId(paymentSettings.getId());
+		
 		
 		if (doctorDTO.getId() != null) {
 			throw new BadRequestAlertException("A new doctor cannot already have an ID", ENTITY_NAME, "idexists");
