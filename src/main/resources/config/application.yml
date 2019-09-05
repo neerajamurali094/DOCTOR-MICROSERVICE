@@ -151,9 +151,9 @@ security:
     oauth2:
         client:
             client-id: account
-            client-secret: 622ccedd-b819-4512-8e43-ee9837088a48
+            client-secret: 28fa0a12-3920-421e-81ec-afdd525ceb1a
         resource:
-            user-info-uri: http://35.196.86.249:8080/auth/realms/ayoos/protocol/openid-connect/userinfo
+            user-info-uri: http://34.74.192.113:8888/auth/realms/ayoos/protocol/openid-connect/userinfo
 
 server:
     servlet:
